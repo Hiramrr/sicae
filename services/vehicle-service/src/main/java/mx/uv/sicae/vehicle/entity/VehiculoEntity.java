@@ -1,8 +1,8 @@
-package mx.uv.sicae.vehicle.model;
+package mx.uv.sicae.vehicle.entity;
 
 import java.time.LocalDateTime;
 
-public class Vehiculo {
+public class VehiculoEntity {
     private Integer idVehiculo;
     private Integer idUsuario;
     private String claveVehiculo;

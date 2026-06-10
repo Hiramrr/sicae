@@ -3,7 +3,7 @@ package mx.uv.sicae.vehicle.service;
 import java.util.List;
 
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
-import mx.uv.sicae.vehicle.model.Vehiculo;
+import mx.uv.sicae.vehicle.entity.VehiculoEntity;
 import mx.uv.sicae.vehicle.repository.VehiculoRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,12 @@ public class VehiculoService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
-    public List<Vehiculo> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
+    public List<VehiculoEntity> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
         return vehiculoRepository.buscarPorUsuario(idUsuario);
     }
 
-    public Vehiculo registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
+    public VehiculoEntity registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
         validarModeloExiste(request.getIdModelo());
         validarPlacaDisponible(request.getPlaca(), null);
@@ -32,7 +32,7 @@ public class VehiculoService {
             throw new IllegalArgumentException("El usuario ya tiene 4 vehiculos activos");
         }
 
-        Vehiculo vehiculo = new Vehiculo();
+        VehiculoEntity vehiculo = new VehiculoEntity();
         vehiculo.setIdUsuario(request.getIdUsuario());
         vehiculo.setClaveVehiculo(generarClaveVehiculo(request.getPlaca()));
         vehiculo.setIdModelo(request.getIdModelo());
@@ -46,11 +46,11 @@ public class VehiculoService {
                 .orElseThrow(() -> new IllegalStateException("No se pudo recuperar el vehiculo registrado"));
     }
 
-    public Vehiculo editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
+    public VehiculoEntity editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
         validarModeloExiste(request.getIdModelo());
 
-        Vehiculo vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
+        VehiculoEntity vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
                 .orElseThrow(() -> new IllegalArgumentException("El vehiculo no existe"));
 
         if (!vehiculoActual.getIdUsuario().equals(request.getIdUsuario())) {
@@ -59,7 +59,7 @@ public class VehiculoService {
 
         validarPlacaDisponible(request.getPlaca(), idVehiculo);
 
-        Vehiculo vehiculo = new Vehiculo();
+        VehiculoEntity vehiculo = new VehiculoEntity();
         vehiculo.setIdVehiculo(idVehiculo);
         vehiculo.setIdUsuario(request.getIdUsuario());
         vehiculo.setIdModelo(request.getIdModelo());
@@ -73,10 +73,10 @@ public class VehiculoService {
                 .orElseThrow(() -> new IllegalStateException("No se pudo recuperar el vehiculo actualizado"));
     }
 
-    public Vehiculo cambiarEstatus(Integer idVehiculo, Integer idUsuario, Boolean activo, Integer idUsuarioAutenticado) {
+    public VehiculoEntity cambiarEstatus(Integer idVehiculo, Integer idUsuario, Boolean activo, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
 
-        Vehiculo vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
+        VehiculoEntity vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
                 .orElseThrow(() -> new IllegalArgumentException("El vehiculo no existe"));
 
         if (!vehiculoActual.getIdUsuario().equals(idUsuario)) {

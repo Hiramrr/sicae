@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import mx.uv.sicae.vehicle.dto.EstatusVehiculoRequest;
 import mx.uv.sicae.vehicle.dto.RespuestaApi;
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
-import mx.uv.sicae.vehicle.model.Vehiculo;
+import mx.uv.sicae.vehicle.entity.VehiculoEntity;
 import mx.uv.sicae.vehicle.service.VehiculoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,31 +31,31 @@ public class VehiculoController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public RespuestaApi<List<Vehiculo>> buscarPorUsuario(@PathVariable Integer idUsuario,
-                                                         @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+    public RespuestaApi<List<VehiculoEntity>> buscarPorUsuario(@PathVariable Integer idUsuario,
+                                                               @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Vehiculos consultados correctamente",
                 vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado));
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<RespuestaApi<Vehiculo>> registrar(@Valid @RequestBody VehiculoRequest request,
-                                                            @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
-        Vehiculo vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
+    public ResponseEntity<RespuestaApi<VehiculoEntity>> registrar(@Valid @RequestBody VehiculoRequest request,
+                                                                  @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+        VehiculoEntity vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
         return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
     }
 
     @PutMapping("/editar/{idVehiculo}")
-    public RespuestaApi<Vehiculo> editar(@PathVariable Integer idVehiculo,
-                                         @Valid @RequestBody VehiculoRequest request,
-                                         @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+    public RespuestaApi<VehiculoEntity> editar(@PathVariable Integer idVehiculo,
+                                               @Valid @RequestBody VehiculoRequest request,
+                                               @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Vehiculo actualizado correctamente",
                 vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado));
     }
 
     @PatchMapping("/estatus/{idVehiculo}")
-    public RespuestaApi<Vehiculo> cambiarEstatus(@PathVariable Integer idVehiculo,
-                                                 @Valid @RequestBody EstatusVehiculoRequest request,
-                                                 @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
+    public RespuestaApi<VehiculoEntity> cambiarEstatus(@PathVariable Integer idVehiculo,
+                                                       @Valid @RequestBody EstatusVehiculoRequest request,
+                                                       @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Estatus del vehiculo actualizado correctamente",
                 vehiculoService.cambiarEstatus(idVehiculo, idUsuarioAutenticado, request.getActivo(), idUsuarioAutenticado));
     }
