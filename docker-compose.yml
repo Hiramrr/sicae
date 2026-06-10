@@ -40,6 +40,22 @@ services:
     networks:
       - sicae-network
 
+  vehicle-service:
+    build:
+      context: ./services/vehicle-service
+    container_name: sicae-vehicle-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://vehicles-db:3306/sicaevehiculo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Mexico_City
+      SPRING_DATASOURCE_USERNAME: sicae_vehiculo_app
+      SPRING_DATASOURCE_PASSWORD: sicae123
+    ports:
+      - "8083:8083"
+    depends_on:
+      vehicles-db:
+        condition: service_healthy
+    networks:
+      - sicae-network
+
   parking-db:
     image: mysql:8.0
     container_name: sicae-parking-db
