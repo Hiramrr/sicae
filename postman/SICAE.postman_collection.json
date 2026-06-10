@@ -144,7 +144,13 @@
           "name": "Buscar vehiculos de usuario",
           "request": {
             "method": "GET",
-            "url": "{{vehicle_base_url}}/users/{{idUsuario}}/vehicles"
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "{{idUsuario}}"
+              }
+            ],
+            "url": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}"
           }
         },
         {
@@ -155,13 +161,17 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{idUsuario}}"
               }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Blanco\",\"anio\":2020,\"descripcion\":\"Vehiculo de prueba\"}"
             },
-            "url": "{{vehicle_base_url}}/vehicles"
+            "url": "{{vehicle_base_url}}/api/vehiculos/registrar"
           }
         },
         {
@@ -172,13 +182,17 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{idUsuario}}"
               }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Gris\",\"anio\":2020,\"descripcion\":\"Vehiculo actualizado\"}"
             },
-            "url": "{{vehicle_base_url}}/vehicles/{{idVehiculo}}"
+            "url": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}"
           }
         },
         {
@@ -189,13 +203,17 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{idUsuario}}"
               }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\"activo\":false}"
             },
-            "url": "{{vehicle_base_url}}/vehicles/{{idVehiculo}}/status"
+            "url": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}"
           }
         }
       ]

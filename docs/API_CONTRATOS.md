@@ -39,10 +39,10 @@ Payload sugerido:
 
 | Accion | Metodo | Ruta | Auth | Descripcion |
 | --- | --- | --- | --- | --- |
-| Buscar por usuario | GET | `/users/{idUsuario}/vehicles` | Si | Lista vehiculos asociados. |
-| Registrar vehiculo | POST | `/vehicles` | Si | Crea vehiculo asociado a usuario. |
-| Editar vehiculo | PUT | `/vehicles/{idVehiculo}` | Si | Actualiza vehiculo propio. |
-| Cambiar estatus | PATCH | `/vehicles/{idVehiculo}/status` | Si | Activa o desactiva vehiculo propio. |
+| Buscar por usuario | GET | `/api/vehiculos/usuario/{idUsuario}` | Si | Lista vehiculos asociados. |
+| Registrar vehiculo | POST | `/api/vehiculos/registrar` | Si | Crea vehiculo asociado a usuario. |
+| Editar vehiculo | PUT | `/api/vehiculos/editar/{idVehiculo}` | Si | Actualiza vehiculo propio. |
+| Cambiar estatus | PATCH | `/api/vehiculos/estatus/{idVehiculo}` | Si | Activa o desactiva vehiculo propio. |
 
 ## ParkingService
 
