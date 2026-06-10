@@ -6,7 +6,7 @@
 flowchart LR
   Client["Postman / Hoppscotch"] --> Auth["AuthService<br/>Java + Tomcat"]
   Client --> User["UserService<br/>Java + Tomcat"]
-  Client --> Vehicle["VehicleService<br/>Node.js + Express"]
+  Client --> Vehicle["VehicleService<br/>Java + Tomcat"]
   Client --> Parking["ParkingService<br/>Java + Tomcat"]
 
   Auth --> UsersDb[("PostgreSQL<br/>usuarios")]
@@ -14,8 +14,8 @@ flowchart LR
   Vehicle --> VehiclesDb[("MySQL 8<br/>vehiculos")]
   Parking --> ParkingDb[("MySQL 8<br/>estacionamiento")]
 
-  Parking -. "REST: validar usuario" .-> User
-  Parking -. "REST: validar vehiculo" .-> Vehicle
+  Parking -. "SOAP: validar usuario" .-> User
+  Parking -. "gRPC/RPC: validar vehiculo" .-> Vehicle
 ```
 
 ## Separacion por dominio
@@ -24,6 +24,13 @@ flowchart LR
 - Dominio vehiculos: VehicleService usa su propia base MySQL.
 - Dominio estacionamiento: ParkingService usa su propia base MySQL.
 - No debe haber llaves foraneas entre bases de datos de dominios distintos.
+
+## Comunicacion entre servicios
+
+- Las APIs publicas se exponen como REST + JSON para pruebas con Postman/Hoppscotch.
+- La integracion interna puede usar SOAP, RPC o gRPC, segun lo que el profesor pida.
+- Propuesta base: ParkingService consulta UserService por SOAP y VehicleService por gRPC/RPC.
+- Todos los microservicios siguen siendo Java; lo que cambia es el protocolo de comunicacion.
 
 ## Capas por microservicio
 

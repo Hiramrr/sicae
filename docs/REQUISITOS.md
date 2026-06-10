@@ -15,6 +15,7 @@ Incluye:
 - contenerizacion de servicios y bases de datos;
 - despliegue distribuido;
 - pruebas de API con Postman o Hoppscotch.
+- integracion entre servicios mediante REST, SOAP, RPC o gRPC segun lo visto en clase.
 
 No incluye:
 
@@ -72,6 +73,13 @@ No incluye:
 - Cada microservicio administra solo su base de datos.
 - No crear relaciones fisicas entre dominios.
 - No eliminar entidades principales, solo cambiar estatus.
+- Las validaciones entre dominios deben hacerse por comunicacion entre servicios, no consultando directamente bases de datos ajenas.
+
+## Comunicacion
+
+- REST + JSON para las APIs publicas y pruebas con Postman/Hoppscotch.
+- SOAP, RPC o gRPC para integracion interna entre microservicios, segun lo acordado con el profesor.
+- Propuesta: UserService expone validacion SOAP para ParkingService; VehicleService expone validacion gRPC/RPC para ParkingService.
 
 ## Bases de datos
 

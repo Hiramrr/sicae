@@ -11,9 +11,9 @@
 ## Division sugerida
 
 - Integrante 1: AuthService y JWT.
-- Integrante 2: UserService y PostgreSQL.
-- Integrante 3: VehicleService y MySQL.
-- Integrante 4: ParkingService, calculo de costos e integracion REST.
+- Integrante 2: UserService, PostgreSQL y contrato SOAP de validacion de usuario.
+- Integrante 3: VehicleService, MySQL y contrato gRPC/RPC de validacion de vehiculo.
+- Integrante 4: ParkingService, calculo de costos e integracion interna con SOAP y gRPC/RPC.
 - Integrante 5, si existe: Docker, Postman, documentacion y pruebas de integracion.
 
 ## Flujo de ramas

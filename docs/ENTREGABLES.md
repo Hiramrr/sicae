@@ -8,6 +8,7 @@
 - [ ] ParkingService terminado.
 - [ ] Dockerfile por microservicio.
 - [ ] Docker Compose o archivos equivalentes por servidor.
+- [ ] Contratos SOAP/gRPC/RPC documentados en `contracts/`.
 - [ ] Scripts SQL importados y versionados si el profesor lo permite.
 - [ ] Configuracion de Docker documentada.
 
@@ -35,5 +36,5 @@
 
 - [ ] Carpeta final nombrada `Equipo_NumEquipo`.
 - [ ] ZIP final nombrado `Equipo_NumEquipo.zip`.
-- [ ] No incluir `node_modules`, `target` ni volumenes de BD.
+- [ ] No incluir `target` ni volumenes de BD.
 - [ ] Verificar que el ZIP pueda ejecutarse en otra maquina siguiendo README.

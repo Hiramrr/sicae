@@ -1,6 +1,8 @@
 # Contratos API iniciales
 
-Estos contratos son una propuesta para arrancar. El equipo debe ajustar nombres, rutas y payloads finales conforme a los scripts de BD y a las decisiones del profesor.
+Estos contratos REST son una propuesta para arrancar y probar con Postman/Hoppscotch. El equipo debe ajustar nombres, rutas y payloads finales conforme a los scripts de BD y a las decisiones del profesor.
+
+Los contratos SOAP, RPC o gRPC de comunicacion interna van en `contracts/` y se explican en `docs/INTEGRACION.md`.
 
 ## Convenciones
 

@@ -200,6 +200,7 @@ Respuesta esperada:
 - Codigo fuente del UserService.
 - Conexion a PostgreSQL.
 - Repositorios/MyBatis para usuarios y catalogos.
+- Contrato SOAP para que ParkingService valide usuarios activos por clave de usuario, si el equipo adopta esta integracion.
 - Endpoints probados en Postman.
 - Validaciones documentadas.
 - Explicacion preparada de reglas de administrador, estatus y bcrypt.
@@ -341,6 +342,7 @@ Respuesta esperada:
 - Codigo fuente del VehicleService.
 - Conexion a MySQL 8.
 - Endpoints de vehiculos probados en Postman.
+- Contrato gRPC/RPC para que ParkingService valide placa y asociacion con usuario, si el equipo adopta esta integracion.
 - Validacion de placas duplicadas.
 - Validacion de maximo 4 vehiculos activos.
 - Explicacion preparada de asociacion usuario-vehiculo.
@@ -459,7 +461,7 @@ Respuesta esperada:
 - Endpoints de entrada, salida y espacios probados en Postman.
 - Calculo correcto de tiempo y costo.
 - Actualizacion correcta de espacios ocupados/libres.
-- Integracion REST con UserService y VehicleService, si el equipo decide validarlo por servicios.
+- Integracion interna con UserService y VehicleService usando SOAP, RPC o gRPC, segun lo acordado por el equipo/profesor.
 - Explicacion preparada del flujo completo de entrada y salida.
 
 ## Responsabilidades de todos los integrantes
@@ -493,6 +495,7 @@ Respuesta esperada:
 3. Desarrollar AuthService para obtener JWT.
 4. Desarrollar UserService y VehicleService en paralelo.
 5. Desarrollar ParkingService e integrar validaciones entre servicios.
-6. Completar coleccion Postman.
-7. Probar despliegue completo con Docker.
-8. Preparar documento tecnico y demo.
+6. Definir contratos SOAP/gRPC/RPC en `contracts/`.
+7. Completar coleccion Postman.
+8. Probar despliegue completo con Docker.
+9. Preparar documento tecnico y demo.
