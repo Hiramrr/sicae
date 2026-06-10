@@ -1,0 +1,48 @@
+services:
+  vehicle-service:
+    build:
+      context: ../services/vehicle-service
+    container_name: sicae-vehicle-service
+    environment:
+      PORT: 8080
+      JWT_SECRET: sicae-dev-secret
+      VEHICLES_DB_HOST: vehicles-db
+      VEHICLES_DB_PORT: 3306
+      VEHICLES_DB_NAME: sicaevehiculo
+      VEHICLES_DB_USER: sicae_vehiculo_app
+      VEHICLES_DB_PASSWORD: sicae123
+    ports:
+      - "8083:8080"
+    depends_on:
+      vehicles-db:
+        condition: service_healthy
+    networks:
+      - sicae-server2
+
+  vehicles-db:
+    image: mysql:8.0
+    container_name: sicae-vehicles-db
+    environment:
+      MYSQL_DATABASE: sicaevehiculo
+      MYSQL_USER: sicae_vehiculo_app
+      MYSQL_PASSWORD: sicae123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3307:3306"
+    volumes:
+      - vehicles-db-data:/var/lib/mysql
+      - ../database/vehicles/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sicae-server2
+
+volumes:
+  vehicles-db-data:
+
+networks:
+  sicae-server2:
+    driver: bridge

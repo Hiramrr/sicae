@@ -1,0 +1,50 @@
+services:
+  parking-service:
+    build:
+      context: ../services/parking-service
+    container_name: sicae-parking-service
+    environment:
+      SERVER_PORT: 8080
+      JWT_SECRET: sicae-dev-secret
+      PARKING_DB_HOST: parking-db
+      PARKING_DB_PORT: 3306
+      PARKING_DB_NAME: sicaeEstacionamiento
+      PARKING_DB_USER: sicae_estacionamiento_app
+      PARKING_DB_PASSWORD: sicae123
+      USER_SERVICE_URL: http://SERVER1_IP:8082
+      VEHICLE_SERVICE_URL: http://SERVER2_IP:8083
+    ports:
+      - "8084:8080"
+    depends_on:
+      parking-db:
+        condition: service_healthy
+    networks:
+      - sicae-server3
+
+  parking-db:
+    image: mysql:8.0
+    container_name: sicae-parking-db
+    environment:
+      MYSQL_DATABASE: sicaeEstacionamiento
+      MYSQL_USER: sicae_estacionamiento_app
+      MYSQL_PASSWORD: sicae123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3308:3306"
+    volumes:
+      - parking-db-data:/var/lib/mysql
+      - ../database/parking/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sicae-server3
+
+volumes:
+  parking-db-data:
+
+networks:
+  sicae-server3:
+    driver: bridge

@@ -1,0 +1,250 @@
+{
+  "info": {
+    "name": "SICAE - API base",
+    "description": "Coleccion inicial para pruebas manuales del proyecto SICAE. Ajustar rutas y payloads finales conforme avance el equipo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "auth_base_url",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "user_base_url",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "vehicle_base_url",
+      "value": "http://localhost:8083"
+    },
+    {
+      "key": "parking_base_url",
+      "value": "http://localhost:8084"
+    },
+    {
+      "key": "jwt_token",
+      "value": ""
+    },
+    {
+      "key": "idUsuario",
+      "value": "1"
+    },
+    {
+      "key": "idVehiculo",
+      "value": "1"
+    },
+    {
+      "key": "idMovimiento",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "AuthService",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"usuario\":\"admin\",\"contrasena\":\"admin123\"}"
+            },
+            "url": "{{auth_base_url}}/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "UserService",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"usuario\":\"jperez\",\"contrasena\":\"Cambiar123\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000000\"}"
+            },
+            "url": "{{user_base_url}}/users"
+          }
+        },
+        {
+          "name": "Editar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000001\"}"
+            },
+            "url": "{{user_base_url}}/users/{{idUsuario}}"
+          }
+        },
+        {
+          "name": "Ver perfil",
+          "request": {
+            "method": "GET",
+            "url": "{{user_base_url}}/users/{{idUsuario}}"
+          }
+        },
+        {
+          "name": "Cambiar estatus",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"activo\":false}"
+            },
+            "url": "{{user_base_url}}/users/{{idUsuario}}/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "VehicleService",
+      "item": [
+        {
+          "name": "Buscar vehiculos de usuario",
+          "request": {
+            "method": "GET",
+            "url": "{{vehicle_base_url}}/users/{{idUsuario}}/vehicles"
+          }
+        },
+        {
+          "name": "Registrar vehiculo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Blanco\",\"anio\":2020,\"descripcion\":\"Vehiculo de prueba\"}"
+            },
+            "url": "{{vehicle_base_url}}/vehicles"
+          }
+        },
+        {
+          "name": "Editar vehiculo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Gris\",\"anio\":2020,\"descripcion\":\"Vehiculo actualizado\"}"
+            },
+            "url": "{{vehicle_base_url}}/vehicles/{{idVehiculo}}"
+          }
+        },
+        {
+          "name": "Cambiar estatus vehiculo",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"activo\":false}"
+            },
+            "url": "{{vehicle_base_url}}/vehicles/{{idVehiculo}}/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ParkingService",
+      "item": [
+        {
+          "name": "Registrar entrada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"claveUsuario\":\"RGR-254\",\"placa\":\"ABC123\",\"idEspacio\":1,\"tarifa\":15.0}"
+            },
+            "url": "{{parking_base_url}}/parking/movements/entry"
+          }
+        },
+        {
+          "name": "Registrar salida",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"claveUsuario\":\"RGR-254\",\"placa\":\"ABC123\"}"
+            },
+            "url": "{{parking_base_url}}/parking/movements/{{idMovimiento}}/exit"
+          }
+        },
+        {
+          "name": "Consultar espacios",
+          "request": {
+            "method": "GET",
+            "url": "{{parking_base_url}}/parking/spaces"
+          }
+        }
+      ]
+    }
+  ]
+}

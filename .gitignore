@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# Java / Maven
+target/
+*.class
+*.war
+*.jar
+.mvn/wrapper/maven-wrapper.jar
+
+# NetBeans
+nbproject/private/
+build/
+dist/
+
+# Node
+node_modules/
+npm-debug.log*
+coverage/
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Docker / local data
+*.pid
+*.log
+docker-data/
+
+# Generated archives
+Equipo_*.zip

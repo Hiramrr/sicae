@@ -1,0 +1,88 @@
+services:
+  users-db:
+    image: postgres:16-alpine
+    container_name: sicae-users-db
+    environment:
+      POSTGRES_DB: sicaeUsuario
+      POSTGRES_USER: sicae_usuario_app
+      POSTGRES_PASSWORD: sicae123
+    ports:
+      - "5432:5432"
+    volumes:
+      - users-db-data:/var/lib/postgresql/data
+      - ./database/users/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sicae-network
+
+  vehicles-db:
+    image: mysql:8.0
+    container_name: sicae-vehicles-db
+    environment:
+      MYSQL_DATABASE: sicaevehiculo
+      MYSQL_USER: sicae_vehiculo_app
+      MYSQL_PASSWORD: sicae123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3307:3306"
+    volumes:
+      - vehicles-db-data:/var/lib/mysql
+      - ./database/vehicles/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sicae-network
+
+  parking-db:
+    image: mysql:8.0
+    container_name: sicae-parking-db
+    environment:
+      MYSQL_DATABASE: sicaeEstacionamiento
+      MYSQL_USER: sicae_estacionamiento_app
+      MYSQL_PASSWORD: sicae123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3308:3306"
+    volumes:
+      - parking-db-data:/var/lib/mysql
+      - ./database/parking/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sicae-network
+
+  adminer:
+    image: adminer:4
+    container_name: sicae-adminer
+    profiles:
+      - tools
+    ports:
+      - "8090:8080"
+    depends_on:
+      users-db:
+        condition: service_healthy
+      vehicles-db:
+        condition: service_healthy
+      parking-db:
+        condition: service_healthy
+    networks:
+      - sicae-network
+
+volumes:
+  users-db-data:
+  vehicles-db-data:
+  parking-db-data:
+
+networks:
+  sicae-network:
+    driver: bridge

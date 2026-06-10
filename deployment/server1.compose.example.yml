@@ -1,0 +1,67 @@
+services:
+  auth-service:
+    build:
+      context: ../services/auth-service
+    container_name: sicae-auth-service
+    environment:
+      SERVER_PORT: 8080
+      JWT_SECRET: sicae-dev-secret
+      USERS_DB_HOST: users-db
+      USERS_DB_PORT: 5432
+      USERS_DB_NAME: sicaeUsuario
+      USERS_DB_USER: sicae_usuario_app
+      USERS_DB_PASSWORD: sicae123
+    ports:
+      - "8081:8080"
+    depends_on:
+      users-db:
+        condition: service_healthy
+    networks:
+      - sicae-server1
+
+  user-service:
+    build:
+      context: ../services/user-service
+    container_name: sicae-user-service
+    environment:
+      SERVER_PORT: 8080
+      JWT_SECRET: sicae-dev-secret
+      USERS_DB_HOST: users-db
+      USERS_DB_PORT: 5432
+      USERS_DB_NAME: sicaeUsuario
+      USERS_DB_USER: sicae_usuario_app
+      USERS_DB_PASSWORD: sicae123
+    ports:
+      - "8082:8080"
+    depends_on:
+      users-db:
+        condition: service_healthy
+    networks:
+      - sicae-server1
+
+  users-db:
+    image: postgres:16-alpine
+    container_name: sicae-users-db
+    environment:
+      POSTGRES_DB: sicaeUsuario
+      POSTGRES_USER: sicae_usuario_app
+      POSTGRES_PASSWORD: sicae123
+    ports:
+      - "5432:5432"
+    volumes:
+      - users-db-data:/var/lib/postgresql/data
+      - ../database/users/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sicae-server1
+
+volumes:
+  users-db-data:
+
+networks:
+  sicae-server1:
+    driver: bridge
