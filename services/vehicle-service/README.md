@@ -1,16 +1,15 @@
-# VehicleService
+# VehiculoService
 
-Responsable de busqueda, registro, edicion y cambio de estatus de vehiculos.
+Microservicio REST + JSON para administrar vehiculos del sistema SICAE.
 
-## Tecnologia propuesta
+## Tecnologia
 
 - Java 17+
-- Spring MVC / RestController
+- Spring Boot / RestController
 - Maven
 - MyBatis
-- Apache Tomcat
-- JWT para autenticacion
 - MySQL 8
+- Tomcat embebido de Spring Boot
 
 ## Responsabilidades
 
@@ -19,13 +18,73 @@ Responsable de busqueda, registro, edicion y cambio de estatus de vehiculos.
 - Limitar a 4 vehiculos activos por usuario.
 - Editar solo vehiculos asociados al usuario autenticado.
 - Activar o desactivar vehiculos sin eliminacion fisica.
-- Exponer validacion de placa/asociacion para ParkingService mediante gRPC o RPC, si el equipo usa esta tecnologia de integracion.
 - Mantener la logica organizada en Controller, Service y Repository.
 
-## Pendiente para el equipo
+## Endpoints
 
-- Crear el proyecto Maven/Java en esta carpeta.
-- Implementar filtro o interceptor JWT.
-- Implementar mappers/repositorios MyBatis para MySQL.
-- Definir contrato gRPC/RPC en `contracts/grpc/` o `contracts/rpc/`, si aplica.
-- Documentar el contrato final en `docs/API_CONTRATOS.md`.
+| Accion | Metodo | Ruta |
+| --- | --- | --- |
+| Buscar vehiculos de usuario | GET | `/api/vehiculos/usuario/{idUsuario}` |
+| Registrar vehiculo | POST | `/api/vehiculos/registrar` |
+| Editar vehiculo | PUT | `/api/vehiculos/editar/{idVehiculo}` |
+| Cambiar estatus | PATCH | `/api/vehiculos/estatus/{idVehiculo}` |
+
+## Ejecucion local con IntelliJ IDEA
+
+1. Levanta la base de datos de vehiculos desde la raiz del proyecto:
+
+```bash
+docker compose up -d vehicles-db
+```
+
+2. Abre en IntelliJ la carpeta:
+
+```text
+services/vehicle-service
+```
+
+3. Espera a que IntelliJ importe Maven.
+4. Ejecuta la clase:
+
+```text
+mx.uv.sicae.vehicle.VehiculoServiceApplication
+```
+
+El servicio queda en:
+
+```text
+http://localhost:8083
+```
+
+Tambien se puede compilar desde esta carpeta con Maven Wrapper:
+
+```bash
+./mvnw.cmd -DskipTests package
+```
+
+## Autenticacion temporal
+
+Mientras `AuthService` no este listo, se usa el header temporal:
+
+```text
+X-User-Id: 1
+```
+
+Cuando el JWT real este listo, este header se reemplazara por:
+
+```text
+Authorization: Bearer <token>
+```
+
+## Ejemplo para registrar vehiculo
+
+```json
+{
+  "idUsuario": 1,
+  "idModelo": 1,
+  "placa": "ABC1234",
+  "color": "Blanco",
+  "anio": 2020,
+  "descripcion": "Vehiculo principal"
+}
+```
