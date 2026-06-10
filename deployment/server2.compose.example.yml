@@ -4,7 +4,7 @@ services:
       context: ../services/vehicle-service
     container_name: sicae-vehicle-service
     environment:
-      PORT: 8080
+      SERVER_PORT: 8080
       JWT_SECRET: sicae-dev-secret
       VEHICLES_DB_HOST: vehicles-db
       VEHICLES_DB_PORT: 3306

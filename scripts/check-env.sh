@@ -22,8 +22,6 @@ check_cmd git "Git"
 check_cmd docker "Docker"
 check_cmd java "Java 17+"
 check_cmd mvn "Maven"
-check_cmd node "Node.js LTS"
-check_cmd npm "npm"
 
 if command -v java >/dev/null 2>&1; then
   java -version 2>&1 | head -n 1
@@ -31,10 +29,6 @@ fi
 
 if command -v mvn >/dev/null 2>&1; then
   mvn -version | head -n 1
-fi
-
-if command -v node >/dev/null 2>&1; then
-  node --version
 fi
 
 if command -v docker >/dev/null 2>&1; then

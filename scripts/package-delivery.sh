@@ -17,8 +17,6 @@ zip -r "$archive" . \
   -x ".git/*" \
   -x ".env" \
   -x ".env.*" \
-  -x "node_modules/*" \
-  -x "*/node_modules/*" \
   -x "target/*" \
   -x "*/target/*" \
   -x "dist/*" \

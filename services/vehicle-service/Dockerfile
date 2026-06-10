@@ -1,19 +1,14 @@
-# Template de contenedor para servicio Node.js/TypeScript.
-# Ajusten scripts y rutas cuando creen el proyecto.
+# Template de contenedor para servicio Java desplegado en Tomcat.
+# Ajusten nombres de artefacto y rutas cuando creen el proyecto Maven.
 
-FROM node:22-alpine AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY tsconfig*.json ./
+COPY pom.xml .
 COPY src ./src
-RUN npm run build
+RUN mvn -DskipTests package
 
-FROM node:22-alpine
-WORKDIR /app
-ENV NODE_ENV=production
-COPY package*.json ./
-RUN npm ci --omit=dev
-COPY --from=build /app/dist ./dist
+FROM tomcat:10.1-jdk17-temurin
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
-CMD ["node", "dist/server.js"]
+CMD ["catalina.sh", "run"]

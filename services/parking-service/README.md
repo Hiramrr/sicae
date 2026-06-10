@@ -25,6 +25,6 @@ Responsable de entradas, salidas y consulta de espacios del estacionamiento.
 ## Pendiente para el equipo
 
 - Crear el proyecto Maven/Java en esta carpeta.
-- Definir como consultara UserService y VehicleService por REST.
+- Definir como consultara UserService y VehicleService mediante SOAP, RPC o gRPC.
 - Implementar calculo de horas/minutos/costo.
 - Documentar el contrato final en `docs/API_CONTRATOS.md`.
