@@ -117,7 +117,11 @@ CREATE TABLE `vehiculo`  (
   `color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `anio` int NOT NULL,
   `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `estatus` bit(1) NOT NULL DEFAULT b'1',
+  `tiempoCreacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `tiempoActualizacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`idVehiculo`) USING BTREE,
+  UNIQUE KEY `uk_vehiculo_placa` (`placa`) USING BTREE,
   INDEX `idModelo`(`idModelo` ASC) USING BTREE,
   CONSTRAINT `vehiculo_ibfk_1` FOREIGN KEY (`idModelo`) REFERENCES `modelo` (`idModelo`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
@@ -130,6 +134,6 @@ CREATE TABLE `vehiculo`  (
 -- View structure for vehiculofullinfo
 -- ----------------------------
 DROP VIEW IF EXISTS `vehiculofullinfo`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vehiculofullinfo` AS select `v`.`idVehiculo` AS `idVehiculo`,`v`.`idUsuario` AS `idUsuario`,`v`.`claveVehiculo` AS `claveVehiculo`,`m1`.`idMarca` AS `idMarca`,`m1`.`marca` AS `marca`,`v`.`idModelo` AS `idModelo`,`m`.`modelo` AS `modelo`,`v`.`placa` AS `placa`,`v`.`color` AS `color`,`v`.`anio` AS `anio`,`v`.`descripcion` AS `descripcion` from ((`vehiculo` `v` join `modelo` `m` on((`m`.`idModelo` = `v`.`idModelo`))) join `marca` `m1` on((`m1`.`idMarca` = `m`.`idMarca`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `vehiculofullinfo` AS select `v`.`idVehiculo` AS `idVehiculo`,`v`.`idUsuario` AS `idUsuario`,`v`.`claveVehiculo` AS `claveVehiculo`,`m1`.`idMarca` AS `idMarca`,`m1`.`marca` AS `marca`,`v`.`idModelo` AS `idModelo`,`m`.`modelo` AS `modelo`,`v`.`placa` AS `placa`,`v`.`color` AS `color`,`v`.`anio` AS `anio`,`v`.`descripcion` AS `descripcion`,`v`.`estatus` AS `estatus`,`v`.`tiempoCreacion` AS `tiempoCreacion`,`v`.`tiempoActualizacion` AS `tiempoActualizacion` from ((`vehiculo` `v` join `modelo` `m` on((`m`.`idModelo` = `v`.`idModelo`))) join `marca` `m1` on((`m1`.`idMarca` = `m`.`idMarca`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

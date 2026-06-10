@@ -1,17 +1,15 @@
 # Scripts MySQL - dominio vehiculos
 
-Coloquen aqui los scripts entregados por el profesor para:
+Aqui se encuentran los scripts del dominio de vehiculos.
 
-- marcas;
-- modelos;
-- vehiculos.
+- `001_sicaevehiculo.sql`: script de vehiculos usado por el proyecto.
 
-Recomendacion de nombres:
+El script incluye el esquema entregado por el profesor y los campos necesarios para cumplir las reglas de `VehicleService`:
 
-```text
-001_schema.sql
-002_seed.sql
-```
+- `estatus` para activar/inactivar vehiculos.
+- `tiempoCreacion` y `tiempoActualizacion`.
+- restriccion unica para `placa`.
+- actualizacion de la vista `vehiculofullinfo`.
 
 MySQL ejecuta los archivos de esta carpeta solo cuando el volumen se crea por primera vez. Para reiniciar desde cero:
 

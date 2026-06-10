@@ -89,10 +89,14 @@ Columnas principales de `vehiculo`:
 - `color`
 - `anio`
 - `descripcion`
+- `estatus`
+- `tiempoCreacion`
+- `tiempoActualizacion`
 
-Observacion importante:
+Restricciones importantes:
 
-- El PDF pide cambiar estatus de vehiculo, pero el script del profesor no incluye columna `estatus` en la tabla `vehiculo`. Antes de implementar esa regla, confirmen si deben agregar la columna o manejar el estatus de otra forma.
+- `placa` debe ser unica.
+- El script de vehiculos incluye los campos necesarios para activar/inactivar vehiculos y registrar tiempos de creacion/actualizacion.
 
 ## Estacionamiento
 
