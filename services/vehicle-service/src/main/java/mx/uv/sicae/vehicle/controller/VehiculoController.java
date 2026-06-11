@@ -57,7 +57,7 @@ public class VehiculoController {
                                                        @Valid @RequestBody EstatusVehiculoRequest request,
                                                        @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Estatus del vehiculo actualizado correctamente",
-                vehiculoService.cambiarEstatus(idVehiculo, idUsuarioAutenticado, request.getActivo(), idUsuarioAutenticado));
+                vehiculoService.cambiarEstatus(idVehiculo, request.getIdUsuario(), request.getActivo(), idUsuarioAutenticado));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
