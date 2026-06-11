@@ -32,14 +32,14 @@ public class VehiculoController {
 
     @GetMapping("/usuario/{idUsuario}")
     public RespuestaApi<List<VehiculoEntity>> buscarPorUsuario(@PathVariable Integer idUsuario,
-                                                               @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+                                                               @RequestHeader(value = "X-User-Id") Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Vehiculos consultados correctamente",
                 vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado));
     }
 
     @PostMapping("/registrar")
     public ResponseEntity<RespuestaApi<VehiculoEntity>> registrar(@Valid @RequestBody VehiculoRequest request,
-                                                                  @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+                                                                  @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
         VehiculoEntity vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
         return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
     }
@@ -47,7 +47,7 @@ public class VehiculoController {
     @PutMapping("/editar/{idVehiculo}")
     public RespuestaApi<VehiculoEntity> editar(@PathVariable Integer idVehiculo,
                                                @Valid @RequestBody VehiculoRequest request,
-                                               @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+                                               @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
         return RespuestaApi.ok("Vehiculo actualizado correctamente",
                 vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado));
     }

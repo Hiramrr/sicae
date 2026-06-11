@@ -26,6 +26,7 @@ public class VehiculoRequest {
     @Max(value = 2100, message = "anio no es valido")
     private Integer anio;
 
+    @NotBlank(message = "descripcion es obligatoria")
     @Size(max = 255, message = "descripcion no debe exceder 255 caracteres")
     private String descripcion;
 
