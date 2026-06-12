@@ -5,7 +5,7 @@ import java.util.List;
 import mx.uv.sicae.vehicle.dto.EstatusVehiculoRequest;
 import mx.uv.sicae.vehicle.dto.RespuestaApi;
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
-import mx.uv.sicae.vehicle.entity.VehiculoEntity;
+import mx.uv.sicae.vehicle.dto.VehiculoResponse;
 import mx.uv.sicae.vehicle.service.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +26,11 @@ public class VehiculoController {
     private VehiculoService vehiculoService;
 
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<RespuestaApi<List<VehiculoEntity>>> buscarPorUsuario(
+    public ResponseEntity<RespuestaApi<List<VehiculoResponse>>> buscarPorUsuario(
             @PathVariable Integer idUsuario,
             @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         try {
-            List<VehiculoEntity> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
+            List<VehiculoResponse> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculos consultados correctamente", vehiculos));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
@@ -39,11 +39,11 @@ public class VehiculoController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<RespuestaApi<VehiculoEntity>> registrar(
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> registrar(
             @RequestBody(required = false) VehiculoRequest request,
             @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         try {
-            VehiculoEntity vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
+            VehiculoResponse vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
             return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
@@ -52,12 +52,12 @@ public class VehiculoController {
     }
 
     @PutMapping("/editar/{idVehiculo}")
-    public ResponseEntity<RespuestaApi<VehiculoEntity>> editar(
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> editar(
             @PathVariable Integer idVehiculo,
             @RequestBody(required = false) VehiculoRequest request,
             @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         try {
-            VehiculoEntity vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
+            VehiculoResponse vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo actualizado correctamente", vehiculo));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
@@ -66,12 +66,12 @@ public class VehiculoController {
     }
 
     @PatchMapping("/estatus/{idVehiculo}")
-    public ResponseEntity<RespuestaApi<VehiculoEntity>> cambiarEstatus(
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> cambiarEstatus(
             @PathVariable Integer idVehiculo,
             @RequestBody(required = false) EstatusVehiculoRequest request,
             @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
         try {
-            VehiculoEntity vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
+            VehiculoResponse vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Estatus del vehiculo actualizado correctamente", vehiculo));
         } catch (Exception e) {
             return ResponseEntity.badRequest()

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import mx.uv.sicae.vehicle.dto.EstatusVehiculoRequest;
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
+import mx.uv.sicae.vehicle.dto.VehiculoResponse;
 import mx.uv.sicae.vehicle.entity.VehiculoEntity;
 import mx.uv.sicae.vehicle.repository.VehiculoRepository;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,15 @@ public class VehiculoService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
-    public List<VehiculoEntity> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
+    public List<VehiculoResponse> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
         validarIdUsuario(idUsuario);
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
-        return vehiculoRepository.buscarPorUsuario(idUsuario);
+        return vehiculoRepository.buscarPorUsuario(idUsuario).stream()
+                .map(VehiculoResponse::fromEntity)
+                .toList();
     }
 
-    public VehiculoEntity registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
+    public VehiculoResponse registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
         validarDatosVehiculo(request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
         validarModeloExiste(request.getIdModelo());
@@ -49,13 +52,13 @@ public class VehiculoService {
 
         Optional<VehiculoEntity> vehiculoRegistrado = vehiculoRepository.buscarPorId(vehiculo.getIdVehiculo());
         if (vehiculoRegistrado.isPresent()) {
-            return vehiculoRegistrado.get();
+            return VehiculoResponse.fromEntity(vehiculoRegistrado.get());
         } else {
             throw new IllegalStateException("No se pudo recuperar el vehiculo registrado");
         }
     }
 
-    public VehiculoEntity editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
+    public VehiculoResponse editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
         validarIdVehiculo(idVehiculo);
         validarDatosVehiculo(request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
@@ -86,13 +89,13 @@ public class VehiculoService {
 
         Optional<VehiculoEntity> vehiculoActualizado = vehiculoRepository.buscarPorId(idVehiculo);
         if (vehiculoActualizado.isPresent()) {
-            return vehiculoActualizado.get();
+            return VehiculoResponse.fromEntity(vehiculoActualizado.get());
         } else {
             throw new IllegalStateException("No se pudo recuperar el vehiculo actualizado");
         }
     }
 
-    public VehiculoEntity cambiarEstatus(Integer idVehiculo, EstatusVehiculoRequest request, Integer idUsuarioAutenticado) {
+    public VehiculoResponse cambiarEstatus(Integer idVehiculo, EstatusVehiculoRequest request, Integer idUsuarioAutenticado) {
         validarDatosEstatus(idVehiculo, request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
 
@@ -117,7 +120,7 @@ public class VehiculoService {
 
         Optional<VehiculoEntity> vehiculoActualizado = vehiculoRepository.buscarPorId(idVehiculo);
         if (vehiculoActualizado.isPresent()) {
-            return vehiculoActualizado.get();
+            return VehiculoResponse.fromEntity(vehiculoActualizado.get());
         } else {
             throw new IllegalStateException("No se pudo recuperar el vehiculo actualizado");
         }
@@ -188,7 +191,7 @@ public class VehiculoService {
             throw new IllegalArgumentException("X-User-Id es obligatorio");
         }
         if (!idUsuarioAutenticado.equals(idUsuario)) {
-            throw new IllegalArgumentException("Solo se pueden modificar vehiculos del usuario autenticado");
+            throw new IllegalArgumentException("Solo se pueden gestionar vehiculos del usuario autenticado");
         }
     }
 
