@@ -2,15 +2,13 @@ package mx.uv.sicae.vehicle.controller;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
 import mx.uv.sicae.vehicle.dto.EstatusVehiculoRequest;
 import mx.uv.sicae.vehicle.dto.RespuestaApi;
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
 import mx.uv.sicae.vehicle.entity.VehiculoEntity;
 import mx.uv.sicae.vehicle.service.VehiculoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,55 +22,60 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/vehiculos")
 public class VehiculoController {
-    private final VehiculoService vehiculoService;
-
-    public VehiculoController(VehiculoService vehiculoService) {
-        this.vehiculoService = vehiculoService;
-    }
+    @Autowired
+    private VehiculoService vehiculoService;
 
     @GetMapping("/usuario/{idUsuario}")
-    public RespuestaApi<List<VehiculoEntity>> buscarPorUsuario(@PathVariable Integer idUsuario,
-                                                               @RequestHeader(value = "X-User-Id") Integer idUsuarioAutenticado) {
-        return RespuestaApi.ok("Vehiculos consultados correctamente",
-                vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado));
+    public ResponseEntity<RespuestaApi<List<VehiculoEntity>>> buscarPorUsuario(
+            @PathVariable Integer idUsuario,
+            @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+        try {
+            List<VehiculoEntity> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
+            return ResponseEntity.ok(RespuestaApi.ok("Vehiculos consultados correctamente", vehiculos));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(RespuestaApi.fail("No se pudo completar la operacion", e.getMessage()));
+        }
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<RespuestaApi<VehiculoEntity>> registrar(@Valid @RequestBody VehiculoRequest request,
-                                                                  @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
-        VehiculoEntity vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
-        return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
+    public ResponseEntity<RespuestaApi<VehiculoEntity>> registrar(
+            @RequestBody(required = false) VehiculoRequest request,
+            @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+        try {
+            VehiculoEntity vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
+            return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(RespuestaApi.fail("No se pudo completar la operacion", e.getMessage()));
+        }
     }
 
     @PutMapping("/editar/{idVehiculo}")
-    public RespuestaApi<VehiculoEntity> editar(@PathVariable Integer idVehiculo,
-                                               @Valid @RequestBody VehiculoRequest request,
-                                               @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
-        return RespuestaApi.ok("Vehiculo actualizado correctamente",
-                vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado));
+    public ResponseEntity<RespuestaApi<VehiculoEntity>> editar(
+            @PathVariable Integer idVehiculo,
+            @RequestBody(required = false) VehiculoRequest request,
+            @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+        try {
+            VehiculoEntity vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
+            return ResponseEntity.ok(RespuestaApi.ok("Vehiculo actualizado correctamente", vehiculo));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(RespuestaApi.fail("No se pudo completar la operacion", e.getMessage()));
+        }
     }
 
     @PatchMapping("/estatus/{idVehiculo}")
-    public RespuestaApi<VehiculoEntity> cambiarEstatus(@PathVariable Integer idVehiculo,
-                                                       @Valid @RequestBody EstatusVehiculoRequest request,
-                                                       @RequestHeader("X-User-Id") Integer idUsuarioAutenticado) {
-        return RespuestaApi.ok("Estatus del vehiculo actualizado correctamente",
-                vehiculoService.cambiarEstatus(idVehiculo, request.getIdUsuario(), request.getActivo(), idUsuarioAutenticado));
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RespuestaApi<Void>> manejarErrorNegocio(IllegalArgumentException exception) {
-        return ResponseEntity.badRequest()
-                .body(RespuestaApi.fail("No se pudo completar la operacion", exception.getMessage()));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RespuestaApi<Void>> manejarErrorValidacion(MethodArgumentNotValidException exception) {
-        String mensaje = exception.getBindingResult().getFieldErrors().stream()
-                .findFirst()
-                .map(error -> error.getDefaultMessage())
-                .orElse("Datos invalidos");
-        return ResponseEntity.badRequest()
-                .body(RespuestaApi.fail("No se pudo completar la operacion", mensaje));
+    public ResponseEntity<RespuestaApi<VehiculoEntity>> cambiarEstatus(
+            @PathVariable Integer idVehiculo,
+            @RequestBody(required = false) EstatusVehiculoRequest request,
+            @RequestHeader(value = "X-User-Id", required = false) Integer idUsuarioAutenticado) {
+        try {
+            VehiculoEntity vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
+            return ResponseEntity.ok(RespuestaApi.ok("Estatus del vehiculo actualizado correctamente", vehiculo));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(RespuestaApi.fail("No se pudo completar la operacion", e.getMessage()));
+        }
     }
 }

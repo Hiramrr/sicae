@@ -1,12 +1,7 @@
 package mx.uv.sicae.vehicle.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 public class EstatusVehiculoRequest {
-    @NotNull(message = "idUsuario es obligatorio")
     private Integer idUsuario;
-
-    @NotNull(message = "activo es obligatorio")
     private Boolean activo;
 
     public Integer getIdUsuario() {
