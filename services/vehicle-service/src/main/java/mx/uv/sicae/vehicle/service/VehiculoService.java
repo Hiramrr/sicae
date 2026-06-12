@@ -1,6 +1,7 @@
 package mx.uv.sicae.vehicle.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
 import mx.uv.sicae.vehicle.entity.VehiculoEntity;
@@ -42,16 +43,24 @@ public class VehiculoService {
         vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
 
         vehiculoRepository.registrar(vehiculo);
-        return vehiculoRepository.buscarPorId(vehiculo.getIdVehiculo())
-                .orElseThrow(() -> new IllegalStateException("No se pudo recuperar el vehiculo registrado"));
+
+        Optional<VehiculoEntity> vehiculoRegistrado = vehiculoRepository.buscarPorId(vehiculo.getIdVehiculo());
+        if (vehiculoRegistrado.isPresent()) {
+            return vehiculoRegistrado.get();
+        } else {
+            throw new IllegalStateException("No se pudo recuperar el vehiculo registrado");
+        }
     }
 
     public VehiculoEntity editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
         validarModeloExiste(request.getIdModelo());
 
-        VehiculoEntity vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
-                .orElseThrow(() -> new IllegalArgumentException("El vehiculo no existe"));
+        Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorId(idVehiculo);
+        if (!resultado.isPresent()) {
+            throw new IllegalArgumentException("El vehiculo no existe");
+        }
+        VehiculoEntity vehiculoActual = resultado.get();
 
         if (!vehiculoActual.getIdUsuario().equals(request.getIdUsuario())) {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
@@ -69,15 +78,23 @@ public class VehiculoService {
         vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
 
         vehiculoRepository.editar(vehiculo);
-        return vehiculoRepository.buscarPorId(idVehiculo)
-                .orElseThrow(() -> new IllegalStateException("No se pudo recuperar el vehiculo actualizado"));
+
+        Optional<VehiculoEntity> vehiculoActualizado = vehiculoRepository.buscarPorId(idVehiculo);
+        if (vehiculoActualizado.isPresent()) {
+            return vehiculoActualizado.get();
+        } else {
+            throw new IllegalStateException("No se pudo recuperar el vehiculo actualizado");
+        }
     }
 
     public VehiculoEntity cambiarEstatus(Integer idVehiculo, Integer idUsuario, Boolean activo, Integer idUsuarioAutenticado) {
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
 
-        VehiculoEntity vehiculoActual = vehiculoRepository.buscarPorId(idVehiculo)
-                .orElseThrow(() -> new IllegalArgumentException("El vehiculo no existe"));
+        Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorId(idVehiculo);
+        if (!resultado.isPresent()) {
+            throw new IllegalArgumentException("El vehiculo no existe");
+        }
+        VehiculoEntity vehiculoActual = resultado.get();
 
         if (!vehiculoActual.getIdUsuario().equals(idUsuario)) {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
@@ -91,8 +108,13 @@ public class VehiculoService {
         }
 
         vehiculoRepository.cambiarEstatus(idVehiculo, idUsuario, activo);
-        return vehiculoRepository.buscarPorId(idVehiculo)
-                .orElseThrow(() -> new IllegalStateException("No se pudo recuperar el vehiculo actualizado"));
+
+        Optional<VehiculoEntity> vehiculoActualizado = vehiculoRepository.buscarPorId(idVehiculo);
+        if (vehiculoActualizado.isPresent()) {
+            return vehiculoActualizado.get();
+        } else {
+            throw new IllegalStateException("No se pudo recuperar el vehiculo actualizado");
+        }
     }
 
     private void validarUsuarioAutenticado(Integer idUsuario, Integer idUsuarioAutenticado) {
@@ -109,11 +131,13 @@ public class VehiculoService {
 
     private void validarPlacaDisponible(String placa, Integer idVehiculoActual) {
         String placaNormalizada = normalizarPlaca(placa);
-        vehiculoRepository.buscarPorPlaca(placaNormalizada).ifPresent(vehiculo -> {
+        Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(placaNormalizada);
+        if (resultado.isPresent()) {
+            VehiculoEntity vehiculo = resultado.get();
             if (idVehiculoActual == null || !vehiculo.getIdVehiculo().equals(idVehiculoActual)) {
                 throw new IllegalArgumentException("Ya existe un vehiculo registrado con la placa indicada");
             }
-        });
+        }
     }
 
     private String normalizarPlaca(String placa) {
