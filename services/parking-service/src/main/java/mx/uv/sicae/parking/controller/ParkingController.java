@@ -33,4 +33,27 @@ public class ParkingController {
             return ResponseEntity.badRequest().body(apiResponse);
         }
     }
+
+    @PatchMapping("/{idMovimiento}/exit")
+    public ResponseEntity<RespuestaApi<Movimiento>> registrarSalida(@PathVariable Integer idMovimiento, @RequestBody Movimiento peticion) {
+        try {
+            if(peticion.getClaveUsuario() == null || peticion.getClaveUsuario().isBlank() ||
+                peticion.getPlaca() == null || peticion.getPlaca().isBlank()) {
+                throw new IllegalArgumentException("La clave de usuario y la placa son obligatorios");
+            }
+
+            Movimiento respuesta = movimientoService.registrarSalida(idMovimiento, peticion);
+            RespuestaApi<Movimiento> apiResponse = new RespuestaApi<>();
+            apiResponse.setSuccess(true);
+            apiResponse.setMessage("Salida registrada correctamente");
+            apiResponse.setData(respuesta);
+            return ResponseEntity.ok(apiResponse);
+        } catch (IllegalArgumentException e) {
+            RespuestaApi<Movimiento> apiResponse = new RespuestaApi<>();
+            apiResponse.setSuccess(false);
+            apiResponse.setMessage("No se pudo registrar la salida");
+            apiResponse.setError(e.getMessage());
+            return ResponseEntity.badRequest().body(apiResponse);
+        }
+    }
 }
