@@ -9,6 +9,7 @@ import mx.uv.sicae.vehicle.dto.VehiculoResponse;
 import mx.uv.sicae.vehicle.config.JwtUtil;
 import mx.uv.sicae.vehicle.service.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -37,11 +38,13 @@ public class VehiculoController {
             List<VehiculoResponse> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculos consultados correctamente", vehiculos));
         } catch (IllegalArgumentException e) {
+            // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
                     .body(RespuestaApi.fail("No se pudieron consultar los vehiculos", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("Ocurrio un error al consultar los vehiculos", e.getMessage()));
+            // Error no contemplado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RespuestaApi.fail("Error interno al consultar los vehiculos", "Intente nuevamente mas tarde"));
         }
     }
 
@@ -54,11 +57,13 @@ public class VehiculoController {
             VehiculoResponse vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
             return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
         } catch (IllegalArgumentException e) {
+            // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("No se pudo registrar el vehiculo", e.getMessage()));
+                    .body(RespuestaApi.fail("Datos de entrada invalidos", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("Ocurrio un error al registrar el vehiculo", e.getMessage()));
+            // Error no contemplado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RespuestaApi.fail("Error interno al registrar el vehiculo", "Intente nuevamente mas tarde"));
         }
     }
 
@@ -72,11 +77,13 @@ public class VehiculoController {
             VehiculoResponse vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo actualizado correctamente", vehiculo));
         } catch (IllegalArgumentException e) {
+            // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("No se pudo actualizar el vehiculo", e.getMessage()));
+                    .body(RespuestaApi.fail("Datos de entrada invalidos", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("Ocurrio un error al actualizar el vehiculo", e.getMessage()));
+            // Error no contemplado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RespuestaApi.fail("Error interno al actualizar el vehiculo", "Intente nuevamente mas tarde"));
         }
     }
 
@@ -90,11 +97,13 @@ public class VehiculoController {
             VehiculoResponse vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Estatus del vehiculo actualizado correctamente", vehiculo));
         } catch (IllegalArgumentException e) {
+            // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("No se pudo cambiar el estatus del vehiculo", e.getMessage()));
+                    .body(RespuestaApi.fail("Datos de entrada invalidos", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(RespuestaApi.fail("Ocurrio un error al cambiar el estatus del vehiculo", e.getMessage()));
+            // Error no contemplado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RespuestaApi.fail("Error interno al cambiar el estatus del vehiculo", "Intente nuevamente mas tarde"));
         }
     }
 }
