@@ -5,10 +5,8 @@ services:
     container_name: sicae-auth-service
     environment:
       SERVER_PORT: 8080
-      JWT_SECRET: sicae-dev-secret
-      USERS_DB_HOST: users-db
-      USERS_DB_PORT: 5432
-      USERS_DB_NAME: sicaeUsuario
+      JWT_SECRET: sicae-dev-secret-key-muy-larga-y-segura-12345
+      USERS_DB_URL: jdbc:postgresql://users-db:5432/sicaeUsuario
       USERS_DB_USER: sicae_usuario_app
       USERS_DB_PASSWORD: sicae123
     ports:
@@ -25,7 +23,7 @@ services:
     container_name: sicae-user-service
     environment:
       SERVER_PORT: 8080
-      JWT_SECRET: sicae-dev-secret
+      JWT_SECRET: sicae-dev-secret-key-muy-larga-y-segura-12345
       USERS_DB_HOST: users-db
       USERS_DB_PORT: 5432
       USERS_DB_NAME: sicaeUsuario

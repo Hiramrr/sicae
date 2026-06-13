@@ -4,15 +4,13 @@ services:
       context: ../services/vehicle-service
     container_name: sicae-vehicle-service
     environment:
-      SERVER_PORT: 8080
-      JWT_SECRET: sicae-dev-secret
-      VEHICLES_DB_HOST: vehicles-db
-      VEHICLES_DB_PORT: 3306
-      VEHICLES_DB_NAME: sicaevehiculo
-      VEHICLES_DB_USER: sicae_vehiculo_app
-      VEHICLES_DB_PASSWORD: sicae123
+      SERVER_PORT: 8083
+      JWT_SECRET: sicae-dev-secret-key-muy-larga-y-segura-12345
+      SPRING_DATASOURCE_URL: jdbc:mysql://vehicles-db:3306/sicaevehiculo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Mexico_City
+      SPRING_DATASOURCE_USERNAME: sicae_vehiculo_app
+      SPRING_DATASOURCE_PASSWORD: sicae123
     ports:
-      - "8083:8080"
+      - "8083:8083"
     depends_on:
       vehicles-db:
         condition: service_healthy

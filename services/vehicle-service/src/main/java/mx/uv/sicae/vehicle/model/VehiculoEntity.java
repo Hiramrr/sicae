@@ -1,4 +1,4 @@
-package mx.uv.sicae.vehicle.entity;
+package mx.uv.sicae.vehicle.model;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package mx.uv.sicae.vehicle.dto;
 
-import mx.uv.sicae.vehicle.entity.VehiculoEntity;
+import mx.uv.sicae.vehicle.model.VehiculoEntity;
 
 public class VehiculoResponse {
     private Integer idUsuario;

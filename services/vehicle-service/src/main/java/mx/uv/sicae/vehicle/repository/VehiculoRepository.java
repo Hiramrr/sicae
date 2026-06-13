@@ -3,7 +3,7 @@ package mx.uv.sicae.vehicle.repository;
 import java.util.List;
 import java.util.Optional;
 
-import mx.uv.sicae.vehicle.entity.VehiculoEntity;
+import mx.uv.sicae.vehicle.model.VehiculoEntity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;

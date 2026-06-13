@@ -62,15 +62,15 @@ Tambien se puede compilar desde esta carpeta con Maven Wrapper:
 ./mvnw.cmd -DskipTests package
 ```
 
-## Autenticacion temporal
+## Autenticacion
 
-Mientras `AuthService` no este listo, se usa el header temporal:
+Primero inicia sesion en `AuthService`:
 
 ```text
-X-User-Id: 1
+POST http://localhost:8081/auth/login
 ```
 
-Cuando el JWT real este listo, este header se reemplazara por:
+Luego consume los endpoints de vehiculos con el token JWT:
 
 ```text
 Authorization: Bearer <token>

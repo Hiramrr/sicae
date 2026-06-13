@@ -277,5 +277,5 @@ INSERT INTO "public"."usuario" (
     "username", "password", "estatus", "idRol", "idTipoUsuario", "idProgramaEducativo"
 ) VALUES (
     'Usuario', 'Prueba', 'PRUEBA001', 'prueba@uv.mx',
-    'prueba', '$2a$10$8vXm781vG8lD6WbH6Q79eOa6z7Ew7XGkS6Bv6Gv6Gv6Gv6Gv6Gv6G', B'1', 1, 1, 1
+    'prueba', '$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW', B'1', 1, 1, 1
 );

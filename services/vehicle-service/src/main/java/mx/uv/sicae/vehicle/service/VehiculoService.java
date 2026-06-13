@@ -6,7 +6,7 @@ import java.util.Optional;
 import mx.uv.sicae.vehicle.dto.EstatusVehiculoRequest;
 import mx.uv.sicae.vehicle.dto.VehiculoRequest;
 import mx.uv.sicae.vehicle.dto.VehiculoResponse;
-import mx.uv.sicae.vehicle.entity.VehiculoEntity;
+import mx.uv.sicae.vehicle.model.VehiculoEntity;
 import mx.uv.sicae.vehicle.repository.VehiculoRepository;
 import org.springframework.stereotype.Service;
 
@@ -188,7 +188,7 @@ public class VehiculoService {
 
     private void validarUsuarioAutenticado(Integer idUsuario, Integer idUsuarioAutenticado) {
         if (idUsuarioAutenticado == null) {
-            throw new IllegalArgumentException("X-User-Id es obligatorio");
+            throw new IllegalArgumentException("Debe enviar el token de autenticacion");
         }
         if (!idUsuarioAutenticado.equals(idUsuario)) {
             throw new IllegalArgumentException("Solo se pueden gestionar vehiculos del usuario autenticado");
