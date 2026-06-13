@@ -270,7 +270,6 @@ ALTER TABLE "public"."usuario" ADD CONSTRAINT "usuario_idProgramaEducativo_fkey"
 ALTER TABLE "public"."usuario" ADD CONSTRAINT "usuario_idRol_fkey" FOREIGN KEY ("idRol") REFERENCES "public"."rol" ("idrol") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."usuario" ADD CONSTRAINT "usuario_idTipoUsuario_fkey" FOREIGN KEY ("idTipoUsuario") REFERENCES "public"."tipoUsuario" ("idTipo") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-INSERT INTO "public"."usuario" VALUES (1, 'Administrador', 'fei', NULL, 'fei', 'admin@example.com', NULL, 'admin', '$2a$10$kOs/guKI1ozK1YV3wcfZIe3gbQe3kdHnLazKo1sA4zAdDxHBlEZXS', '1', 1, 1, 3, '2026-05-25 19:30:55', NULL);
 
 INSERT INTO "public"."usuario" (
     "nombre", "apellidoPaterno", "claveUsuario", "email",
