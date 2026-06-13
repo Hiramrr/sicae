@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mx.uv.sicae.users.repository.UsuarioRepository">
+
+  <sql id="columnasPerfil">
+    "idUsuario" AS "idUsuario",
+    rol AS rol,
+    TRIM(nombre || ' ' || "apellidoPaterno" || ' ' || COALESCE("apellidoMaterno", '')) AS "nombreCompleto",
+    "tipoUsuario" AS "tipoUsuario",
+    "programaEducativo" AS "programaEducativo",
+    username AS username,
+    email AS email,
+    telefono AS telefono,
+    CASE WHEN estatus = B'1' THEN TRUE ELSE FALSE END AS estatus,
+    "claveUsuario" AS "claveUsuario",
+    "tiempoCreacion" AS "tiempoCreacion",
+    "tempoActualizacion" AS "tempoActualizacion"
+  </sql>
+
+  <select id="buscarPerfilPorId" resultType="mx.uv.sicae.users.model.UsuarioPerfil">
+    SELECT <include refid="columnasPerfil"/>
+    FROM "usuarioFullInfo"
+    WHERE "idUsuario" = #{idUsuario}
+  </select>
+
+  <select id="buscarPorEmail" resultType="mx.uv.sicae.users.model.UsuarioPerfil">
+    SELECT <include refid="columnasPerfil"/>
+    FROM "usuarioFullInfo"
+    WHERE LOWER(email) = LOWER(#{email})
+  </select>
+
+  <select id="buscarPorUsername" resultType="mx.uv.sicae.users.model.UsuarioPerfil">
+    SELECT <include refid="columnasPerfil"/>
+    FROM "usuarioFullInfo"
+    WHERE LOWER(username) = LOWER(#{username})
+  </select>
+
+  <select id="buscarPorClaveUsuario" resultType="mx.uv.sicae.users.model.UsuarioPerfil">
+    SELECT <include refid="columnasPerfil"/>
+    FROM "usuarioFullInfo"
+    WHERE "claveUsuario" = #{claveUsuario}
+  </select>
+
+  <insert id="insertar" parameterType="mx.uv.sicae.users.model.UsuarioEntity" useGeneratedKeys="true" keyProperty="idUsuario">
+    INSERT INTO usuario (nombre, "apellidoPaterno", "apellidoMaterno", "claveUsuario", email, telefono, username, password, estatus, "idRol", "idTipoUsuario", "idProgramaEducativo", "tiempoCreacion", "tempoActualizacion")
+    VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{claveUsuario}, #{email}, #{telefono}, #{username}, #{password}, CASE WHEN #{estatus} THEN B'1' ELSE B'0' END, #{idRol}, #{idTipoUsuario}, #{idProgramaEducativo}, #{tiempoCreacion}, #{tempoActualizacion})
+  </insert>
+
+  <update id="actualizar" parameterType="mx.uv.sicae.users.model.UsuarioEntity">
+    UPDATE usuario SET nombre = #{nombre}, "apellidoPaterno" = #{apellidoPaterno}, "apellidoMaterno" = #{apellidoMaterno}, email = #{email}, telefono = #{telefono}, "idRol" = #{idRol}, "idTipoUsuario" = #{idTipoUsuario}, "idProgramaEducativo" = #{idProgramaEducativo}, "tempoActualizacion" = #{tempoActualizacion}
+    WHERE "idUsuario" = #{idUsuario}
+  </update>
+
+  <update id="cambiarEstatus">
+    UPDATE usuario SET estatus = CASE WHEN #{estatus} THEN B'1' ELSE B'0' END, "tempoActualizacion" = CURRENT_TIMESTAMP
+    WHERE "idUsuario" = #{idUsuario}
+  </update>
+
+</mapper>
