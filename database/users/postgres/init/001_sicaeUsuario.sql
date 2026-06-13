@@ -167,7 +167,6 @@ CACHE 1
 -- ----------------------------
 -- Records of usuario
 -- ----------------------------
-INSERT INTO "public"."usuario" VALUES (1, 'Administrador', 'fei', NULL, 'fei', 'admin@example.com', NULL, 'admin', '$2a$10$kOs/guKI1ozK1YV3wcfZIe3gbQe3kdHnLazKo1sA4zAdDxHBlEZXS', '1', 1, 1, 3, '2026-05-25 19:30:55', NULL);
 
 -- ----------------------------
 -- View structure for usuarioFullInfo
@@ -274,9 +273,9 @@ ALTER TABLE "public"."usuario" ADD CONSTRAINT "usuario_idTipoUsuario_fkey" FOREI
 INSERT INTO "public"."usuario" VALUES (1, 'Administrador', 'fei', NULL, 'fei', 'admin@example.com', NULL, 'admin', '$2a$10$kOs/guKI1ozK1YV3wcfZIe3gbQe3kdHnLazKo1sA4zAdDxHBlEZXS', '1', 1, 1, 3, '2026-05-25 19:30:55', NULL);
 
 INSERT INTO "public"."usuario" (
-    "nombre", "apellidoPaterno", "claveUsuario", "email", 
+    "nombre", "apellidoPaterno", "claveUsuario", "email",
     "username", "password", "estatus", "idRol", "idTipoUsuario", "idProgramaEducativo"
 ) VALUES (
-    'Usuario', 'Prueba', 'PRUEBA001', 'prueba@uv.mx', 
+    'Usuario', 'Prueba', 'PRUEBA001', 'prueba@uv.mx',
     'prueba', '$2a$10$8vXm781vG8lD6WbH6Q79eOa6z7Ew7XGkS6Bv6Gv6Gv6Gv6Gv6Gv6G', B'1', 1, 1, 1
 );
