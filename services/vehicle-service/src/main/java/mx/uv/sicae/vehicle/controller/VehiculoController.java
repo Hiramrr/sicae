@@ -48,6 +48,12 @@ public class VehiculoController {
         }
     }
 
+    @GetMapping({"/usuario", "/usuario/"})
+    public ResponseEntity<RespuestaApi<List<VehiculoResponse>>> buscarPorUsuarioSinId() {
+        return ResponseEntity.badRequest()
+                .body(RespuestaApi.fail("Datos de entrada invalidos", "idUsuario es obligatorio"));
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> registrar(
             @RequestBody(required = false) VehiculoRequest request,
@@ -65,6 +71,12 @@ public class VehiculoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RespuestaApi.fail("Error interno al registrar el vehiculo", "Intente nuevamente mas tarde"));
         }
+    }
+
+    @PutMapping({"/editar", "/editar/"})
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> editarSinId() {
+        return ResponseEntity.badRequest()
+                .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
 
     @PutMapping("/editar/{idVehiculo}")
@@ -85,6 +97,12 @@ public class VehiculoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RespuestaApi.fail("Error interno al actualizar el vehiculo", "Intente nuevamente mas tarde"));
         }
+    }
+
+    @PatchMapping({"/estatus", "/estatus/"})
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> cambiarEstatusSinId() {
+        return ResponseEntity.badRequest()
+                .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
 
     @PatchMapping("/estatus/{idVehiculo}")
