@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import mx.uv.sicae.parking.model.*;
+import mx.uv.sicae.parking.dto.*;
 import mx.uv.sicae.parking.service.MovimientoService;
 
 @RestController
@@ -17,7 +18,7 @@ public class ParkingController {
     }
 
     @PostMapping("/entry")
-    public ResponseEntity<RespuestaApi<Movimiento>> registrarEntrada(@Valid @RequestBody Movimiento peticion) {
+    public ResponseEntity<RespuestaApi<Movimiento>> registrarEntrada(@Valid @RequestBody EntradaRequestDTO peticion) {
         try {
             Movimiento respuesta = movimientoService.registrarEntrada(peticion);
             RespuestaApi<Movimiento> apiResponse = new RespuestaApi<>();
@@ -35,13 +36,8 @@ public class ParkingController {
     }
 
     @PatchMapping("/{idMovimiento}/exit")
-    public ResponseEntity<RespuestaApi<Movimiento>> registrarSalida(@PathVariable Integer idMovimiento, @RequestBody Movimiento peticion) {
+    public ResponseEntity<RespuestaApi<Movimiento>> registrarSalida(@PathVariable Integer idMovimiento, @Valid @RequestBody SalidaRequestDTO peticion) {
         try {
-            if(peticion.getClaveUsuario() == null || peticion.getClaveUsuario().isBlank() ||
-                peticion.getPlaca() == null || peticion.getPlaca().isBlank()) {
-                throw new IllegalArgumentException("La clave de usuario y la placa son obligatorios");
-            }
-
             Movimiento respuesta = movimientoService.registrarSalida(idMovimiento, peticion);
             RespuestaApi<Movimiento> apiResponse = new RespuestaApi<>();
             apiResponse.setSuccess(true);

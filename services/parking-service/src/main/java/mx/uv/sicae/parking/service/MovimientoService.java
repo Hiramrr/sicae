@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import mx.uv.sicae.parking.model.*;
+import mx.uv.sicae.parking.dto.*;
 import mx.uv.sicae.parking.repository.*;
 import mx.uv.sicae.parking.client.*;
 
@@ -27,7 +28,7 @@ public class MovimientoService {
     }
 
     @Transactional
-    public Movimiento registrarEntrada(Movimiento peticion) {
+    public Movimiento registrarEntrada(EntradaRequestDTO peticion) {
         Usuario usuario = userServiceClient.validarUsuario(peticion.getClaveUsuario());
         if (usuario == null || !usuario.isActivo()) {
             throw new IllegalArgumentException("El usuario no existe o se encuentra inactivo");
@@ -56,25 +57,29 @@ public class MovimientoService {
         }
 
         LocalDateTime ahora = LocalDateTime.now();
-        peticion.setIdVehiculo(vehiculo.getIdVehiculo());
-        peticion.setTiempoEntrada(ahora);
-        peticion.setTiempoSalida(ahora);
-        peticion.setTiempoCreacion(ahora);
 
-        movimientoRepository.registrarEntrada(peticion);
+        Movimiento nuevoMovimiento = new Movimiento();
+        nuevoMovimiento.setIdVehiculo(vehiculo.getIdVehiculo());
+        nuevoMovimiento.setTarifaHora(peticion.getTarifaHora());
+        nuevoMovimiento.setIdEspacio(peticion.getIdEspacio());
+        nuevoMovimiento.setTiempoEntrada(ahora);
+        nuevoMovimiento.setTiempoSalida(ahora);
+        nuevoMovimiento.setTiempoCreacion(ahora);
+
+        movimientoRepository.registrarEntrada(nuevoMovimiento);
         espacioRepository.actualizarOcupacion(espacio.getIdEspacio(), true);
 
         Movimiento respuesta = new Movimiento();
-        respuesta.setIdMovimiento(peticion.getIdMovimiento());
-        respuesta.setTiempoEntrada(peticion.getTiempoEntrada());
+        respuesta.setIdMovimiento(nuevoMovimiento.getIdMovimiento());
+        respuesta.setTiempoEntrada(nuevoMovimiento.getTiempoEntrada());
         respuesta.setEspacioAsignado(espacio.getClaveEspacio());
-        respuesta.setTarifaHora(peticion.getTarifaHora());
+        respuesta.setTarifaHora(nuevoMovimiento.getTarifaHora());
 
         return respuesta;
     }
 
     @Transactional
-    public Movimiento registrarSalida(Integer idMovimiento, Movimiento peticion) {
+    public Movimiento registrarSalida(Integer idMovimiento, SalidaRequestDTO peticion) {
         Usuario usuario = userServiceClient.validarUsuario(peticion.getClaveUsuario());
         if (usuario == null || !usuario.isActivo()) {
             throw new IllegalArgumentException("El usuario no existe o se encuentra inactivo");
@@ -89,7 +94,7 @@ public class MovimientoService {
             .orElseThrow(() -> new IllegalArgumentException("El movimiento indicado no existe"));
 
         if (movimiento.getCostoTotal() != null) {
-            throw new IllegalArgumentException("El movimiento ya se encuentra cerrado (el vehiculo ya salio)");
+            throw new IllegalArgumentException("El movimiento ya se encuentra cerrado");
         }
 
         if (!movimiento.getIdVehiculo().equals(vehiculo.getIdVehiculo())) {
