@@ -54,6 +54,29 @@ public class VehiculoController {
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idUsuario es obligatorio"));
     }
 
+    @GetMapping("/placa/{placa}")
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> buscarPorPlaca(
+            @PathVariable String placa,
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        try {
+            jwtUtil.obtenerIdUsuario(authorizationHeader);
+            VehiculoResponse vehiculo = vehiculoService.buscarPorPlaca(placa);
+            return ResponseEntity.ok(RespuestaApi.ok("Vehiculo consultado correctamente", vehiculo));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(RespuestaApi.fail("No se pudo consultar el vehiculo", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RespuestaApi.fail("Error interno al consultar el vehiculo", "Intente nuevamente mas tarde"));
+        }
+    }
+
+    @GetMapping({"/placa", "/placa/"})
+    public ResponseEntity<RespuestaApi<VehiculoResponse>> buscarPorPlacaSinPlaca() {
+        return ResponseEntity.badRequest()
+                .body(RespuestaApi.fail("Datos de entrada invalidos", "placa es obligatoria"));
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> registrar(
             @RequestBody(required = false) VehiculoRequest request,

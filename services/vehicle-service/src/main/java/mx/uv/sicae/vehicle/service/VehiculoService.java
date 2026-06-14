@@ -1,5 +1,6 @@
 package mx.uv.sicae.vehicle.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +24,27 @@ public class VehiculoService {
     public List<VehiculoResponse> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
         validarIdUsuario(idUsuario);
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
-        return vehiculoRepository.buscarPorUsuario(idUsuario).stream()
-                .map(VehiculoResponse::fromEntity)
-                .toList();
+
+        List<VehiculoEntity> vehiculos = vehiculoRepository.buscarPorUsuario(idUsuario);
+        List<VehiculoResponse> respuesta = new ArrayList<>();
+
+        for (VehiculoEntity vehiculo : vehiculos) {
+            respuesta.add(VehiculoResponse.fromEntity(vehiculo));
+        }
+
+        return respuesta;
+    }
+
+    public VehiculoResponse buscarPorPlaca(String placa) {
+        validarPlacaConsulta(placa);
+
+        Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(normalizarPlaca(placa));
+        if (resultado.isEmpty()) {
+            throw new IllegalArgumentException("No existe un vehiculo registrado con la placa indicada");
+        }
+
+        VehiculoEntity vehiculo = resultado.get();
+        return VehiculoResponse.fromEntity(vehiculo);
     }
 
     public VehiculoResponse registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
@@ -150,8 +169,8 @@ public class VehiculoService {
         if (request.getAnio() == null) {
             throw new IllegalArgumentException("anio es obligatorio");
         }
-        if (request.getAnio() < 1900 || request.getAnio() > 2100) {
-            throw new IllegalArgumentException("anio no es valido");
+        if (request.getAnio() < 1980 || request.getAnio() > 2026) {
+            throw new IllegalArgumentException("anio no es valido, debe estar entre 1980 y 2026");
         }
         if (request.getDescripcion() == null || request.getDescripcion().trim().isEmpty()) {
             throw new IllegalArgumentException("descripcion es obligatoria");
@@ -183,6 +202,18 @@ public class VehiculoService {
     private void validarIdVehiculo(Integer idVehiculo) {
         if (idVehiculo == null) {
             throw new IllegalArgumentException("idVehiculo es obligatorio");
+        }
+    }
+
+    private void validarPlacaConsulta(String placa) {
+        if (placa == null || placa.trim().isEmpty()) {
+            throw new IllegalArgumentException("placa es obligatoria");
+        }
+        if (placa.trim().length() < 7) {
+            throw new IllegalArgumentException("placa debe tener al menos 7 caracteres");
+        }
+        if (placa.trim().length() > 7) {
+            throw new IllegalArgumentException("placa no debe exceder 7 caracteres");
         }
     }
 
