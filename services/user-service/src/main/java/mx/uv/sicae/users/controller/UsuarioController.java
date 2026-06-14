@@ -89,12 +89,12 @@ public class UsuarioController {
             @RequestHeader("Authorization") String authorizationHeader) {
         String token = extraerToken(authorizationHeader);
         Integer idUsuarioAutenticado = jwtUtil.extraerIdUsuario(token);
-        Integer idRolAutenticado = jwtUtil.extraerIdRol(token);
+        Integer idRolToken = jwtUtil.extraerIdRol(token);
         UsuarioResponse usuario = usuarioService.cambiarEstatus(
                 idUsuario,
                 request,
                 idUsuarioAutenticado,
-                idRolAutenticado);
+                idRolToken);
         log.info("Estatus cambiado: idUsuario={}, estatus={}", idUsuario, usuario.getEstatus());
         return ResponseEntity.ok(RespuestaApi.ok("Estatus del usuario actualizado correctamente", usuario));
     }

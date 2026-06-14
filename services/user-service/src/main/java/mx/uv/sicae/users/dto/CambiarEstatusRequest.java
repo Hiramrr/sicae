@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class CambiarEstatusRequest {
     private Integer idUsuario;
+    private Integer idRol;
     @JsonAlias("activo")
     private Boolean estatus;
 
@@ -13,6 +14,14 @@ public class CambiarEstatusRequest {
 
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public Integer getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
     }
 
     public Boolean getEstatus() {

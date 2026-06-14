@@ -131,8 +131,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse cambiarEstatus(Integer idUsuario, CambiarEstatusRequest request, Integer idUsuarioAutenticado, Integer idRolAutenticado) {
-        validarAdministrador(idRolAutenticado);
+    public UsuarioResponse cambiarEstatus(Integer idUsuario, CambiarEstatusRequest request, Integer idUsuarioAutenticado, Integer idRolToken) {
         validarIdUsuario(idUsuario);
         if (request == null) {
             throw new IllegalArgumentException("Los datos del estatus son obligatorios");
@@ -140,6 +139,13 @@ public class UsuarioService {
         if (request.getIdUsuario() != null && !request.getIdUsuario().equals(idUsuario)) {
             throw new IllegalArgumentException("El idUsuario del cuerpo no coincide con la ruta");
         }
+        if (request.getIdRol() == null) {
+            throw new IllegalArgumentException("idRol es obligatorio");
+        }
+        if (!request.getIdRol().equals(idRolToken)) {
+            throw new IllegalArgumentException("El idRol del cuerpo no coincide con el token de autenticacion");
+        }
+        validarAdministrador(request.getIdRol());
         if (request.getEstatus() == null) {
             throw new IllegalArgumentException("estatus es obligatorio");
         }
