@@ -59,8 +59,8 @@ public class VehiculoController {
             @PathVariable String placa,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
-            jwtUtil.obtenerIdUsuario(authorizationHeader);
-            VehiculoResponse vehiculo = vehiculoService.buscarPorPlaca(placa);
+            Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
+            VehiculoResponse vehiculo = vehiculoService.buscarPorPlaca(placa, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo consultado correctamente", vehiculo));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()

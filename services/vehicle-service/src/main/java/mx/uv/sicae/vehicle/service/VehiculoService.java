@@ -35,7 +35,7 @@ public class VehiculoService {
         return respuesta;
     }
 
-    public VehiculoResponse buscarPorPlaca(String placa) {
+    public VehiculoResponse buscarPorPlaca(String placa, Integer idUsuarioAutenticado) {
         validarPlacaConsulta(placa);
 
         Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(normalizarPlaca(placa));
@@ -44,6 +44,7 @@ public class VehiculoService {
         }
 
         VehiculoEntity vehiculo = resultado.get();
+        validarUsuarioAutenticado(vehiculo.getIdUsuario(), idUsuarioAutenticado);
         return VehiculoResponse.fromEntity(vehiculo);
     }
 
