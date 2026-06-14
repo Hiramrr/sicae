@@ -1,6 +1,7 @@
 package mx.uv.sicae.users.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -13,11 +14,16 @@ import mx.uv.sicae.users.model.UsuarioPerfil;
 import mx.uv.sicae.users.repository.CatalogoRepository;
 import mx.uv.sicae.users.repository.UsuarioRepository;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioService {
+
+    private static final Logger log = LoggerFactory.getLogger(UsuarioService.class);
+
     private static final int ID_ROL_ADMINISTRADOR = 1;
     private static final int MAX_NOMBRE = 50;
     private static final int MAX_APELLIDO = 50;
@@ -36,6 +42,14 @@ public class UsuarioService {
     public UsuarioService(UsuarioRepository usuarioRepository, CatalogoRepository catalogoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.catalogoRepository = catalogoRepository;
+    }
+
+    public List<UsuarioResponse> listarUsuarios() {
+        List<UsuarioPerfil> perfiles = usuarioRepository.listarTodos();
+        log.debug("Usuarios encontrados: {}", perfiles.size());
+        return perfiles.stream()
+                .map(UsuarioResponse::fromEntity)
+                .toList();
     }
 
     public UsuarioResponse obtenerPerfil(Integer idUsuario) {
@@ -73,12 +87,17 @@ public class UsuarioService {
 
         usuarioRepository.insertar(usuario);
 
+        log.info("Usuario creado: idUsuario={}, username={}, claveUsuario={}",
+                usuario.getIdUsuario(), datos.username(), usuario.getClaveUsuario());
+
         return obtenerPerfilRegistrado(usuario.getIdUsuario(), datos.username());
     }
 
     @Transactional
-    public UsuarioResponse editarUsuario(Integer idUsuario, EditarUsuarioRequest request) {
+    public UsuarioResponse editarUsuario(Integer idUsuario, EditarUsuarioRequest request,
+                                          Integer idUsuarioAutenticado, Integer idRolAutenticado) {
         validarIdUsuario(idUsuario);
+        validarPropietarioOAdministrador(idUsuario, idUsuarioAutenticado, idRolAutenticado);
         if (request == null) {
             throw new IllegalArgumentException("Los datos del usuario son obligatorios");
         }
@@ -105,6 +124,8 @@ public class UsuarioService {
         if (filas == 0) {
             throw new IllegalStateException("No se pudo actualizar el usuario");
         }
+
+        log.info("Usuario editado: idUsuario={}", idUsuario);
 
         return obtenerPerfil(idUsuario);
     }
@@ -136,7 +157,19 @@ public class UsuarioService {
             throw new IllegalStateException("No se pudo cambiar el estatus del usuario");
         }
 
+        log.info("Estatus cambiado: idUsuario={}, nuevoEstatus={}", idUsuario, request.getEstatus());
+
         return obtenerPerfil(idUsuario);
+    }
+
+    private void validarPropietarioOAdministrador(Integer idUsuario, Integer idUsuarioAutenticado, Integer idRolAutenticado) {
+        if (idRolAutenticado != null && idRolAutenticado == ID_ROL_ADMINISTRADOR) {
+            return;
+        }
+        if (idUsuarioAutenticado != null && idUsuarioAutenticado.equals(idUsuario)) {
+            return;
+        }
+        throw new SecurityException("No tienes permiso para editar este usuario");
     }
 
     private DatosRegistro validarDatosRegistro(RegistrarUsuarioRequest request) {

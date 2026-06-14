@@ -44,6 +44,12 @@
     WHERE "claveUsuario" = #{claveUsuario}
   </select>
 
+  <select id="listarTodos" resultType="mx.uv.sicae.users.model.UsuarioPerfil">
+    SELECT <include refid="columnasPerfil"/>
+    FROM "usuarioFullInfo"
+    ORDER BY "idUsuario"
+  </select>
+
   <insert id="insertar" parameterType="mx.uv.sicae.users.model.UsuarioEntity" useGeneratedKeys="true" keyProperty="idUsuario">
     INSERT INTO usuario (nombre, "apellidoPaterno", "apellidoMaterno", "claveUsuario", email, telefono, username, password, estatus, "idRol", "idTipoUsuario", "idProgramaEducativo", "tiempoCreacion", "tempoActualizacion")
     VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{claveUsuario}, #{email}, #{telefono}, #{username}, #{password}, CASE WHEN #{estatus} THEN B'1' ELSE B'0' END, #{idRol}, #{idTipoUsuario}, #{idProgramaEducativo}, #{tiempoCreacion}, #{tempoActualizacion})
