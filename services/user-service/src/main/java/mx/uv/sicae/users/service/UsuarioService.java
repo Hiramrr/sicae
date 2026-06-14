@@ -44,7 +44,8 @@ public class UsuarioService {
         this.catalogoRepository = catalogoRepository;
     }
 
-    public List<UsuarioResponse> listarUsuarios() {
+    public List<UsuarioResponse> listarUsuarios(Integer idRolAutenticado) {
+        validarAdministrador(idRolAutenticado);
         List<UsuarioPerfil> perfiles = usuarioRepository.listarTodos();
         log.debug("Usuarios encontrados: {}", perfiles.size());
         return perfiles.stream()

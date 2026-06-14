@@ -52,8 +52,9 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<RespuestaApi<List<UsuarioResponse>>> listar(
             @RequestHeader("Authorization") String authorizationHeader) {
-        extraerToken(authorizationHeader);
-        List<UsuarioResponse> usuarios = usuarioService.listarUsuarios();
+        String token = extraerToken(authorizationHeader);
+        Integer idRolAutenticado = jwtUtil.extraerIdRol(token);
+        List<UsuarioResponse> usuarios = usuarioService.listarUsuarios(idRolAutenticado);
         log.debug("Usuarios consultados: {} registros", usuarios.size());
         return ResponseEntity.ok(RespuestaApi.ok("Usuarios consultados correctamente", usuarios));
     }
