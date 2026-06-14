@@ -1,14 +1,38 @@
 # Contratos SOAP
 
-Usen esta carpeta para el WSDL o la descripcion formal del servicio SOAP.
+## Servicio: UserValidationService
 
-Contrato sugerido:
+Permite que ParkingService valide que un usuario existe y esta activo sin conectarse directamente a la base de datos de usuarios.
 
-```text
-UserValidationService
-validarUsuarioPorClave(claveUsuario)
+### Contrato formal
+
+`contracts/soap/userValidation.xsd` — Esquema XSD que define:
+
+**Operacion:**
+```
+validarUsuarioPorClave(claveUsuario) -> UsuarioValidado
 ```
 
-Objetivo:
+**Entrada (validarUsuarioPorClaveRequest):**
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| claveUsuario | string | Clave unica del usuario (ej: RGR-254) |
 
-- Permitir que ParkingService valide que un usuario existe y esta activo sin conectarse directamente a la base de datos de usuarios.
+**Salida (validarUsuarioPorClaveResponse):**
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| idUsuario | int | ID del usuario |
+| claveUsuario | string | Clave del usuario |
+| nombreCompleto | string | Nombre completo del usuario |
+| activo | boolean | Indica si el usuario esta activo |
+| rol | string | Rol del usuario (Administrador, Invitado) |
+| tipoUsuario | string | Tipo de usuario (Docente, Administrativo, Estudiante) |
+
+### Implementacion
+
+- **Server (UserService):** `mx.uv.sicae.users.ws.UserValidationEndpoint`
+  - Expuesto en: `POST /ws/userValidation.wsdl` (puerto 8082)
+- **Client (ParkingService):** `mx.uv.sicae.parking.client.UserServiceClientImpl`
+  - Usa `WebServiceTemplate` para llamar al endpoint SOAP
+  - URL en Docker: `http://user-service:8082/ws`
+  - URL local: `http://localhost:8082/ws`

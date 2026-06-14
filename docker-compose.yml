@@ -36,6 +36,23 @@ services:
     networks:
       - sicae-network
 
+  user-service:
+    build:
+      context: ./services/user-service
+    container_name: sicae-user-service
+    environment:
+      JWT_SECRET: sicae-dev-secret-key-muy-larga-y-segura-12345
+      USERS_DB_URL: jdbc:postgresql://users-db:5432/sicaeUsuario
+      USERS_DB_USER: sicae_usuario_app
+      USERS_DB_PASSWORD: sicae123
+    ports:
+      - "8082:8082"
+    depends_on:
+      users-db:
+        condition: service_healthy
+    networks:
+      - sicae-network
+
   vehicles-db:
     image: mysql:8.0
     container_name: sicae-vehicles-db

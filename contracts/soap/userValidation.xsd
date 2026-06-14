@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://sicae.uv.mx/users/validation"
+           xmlns:tns="http://sicae.uv.mx/users/validation"
+           elementFormDefault="qualified">
+
+    <xs:element name="validarUsuarioPorClaveRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="claveUsuario" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="validarUsuarioPorClaveResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idUsuario" type="xs:int"/>
+                <xs:element name="claveUsuario" type="xs:string"/>
+                <xs:element name="nombreCompleto" type="xs:string"/>
+                <xs:element name="activo" type="xs:boolean"/>
+                <xs:element name="rol" type="xs:string"/>
+                <xs:element name="tipoUsuario" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

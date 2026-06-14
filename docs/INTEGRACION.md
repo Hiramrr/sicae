@@ -70,9 +70,23 @@ perteneceAlUsuario
 mensaje
 ```
 
+## Estado de implementacion
+
+### SOAP - UserService (Implementado)
+
+- **Contrato**: `contracts/soap/userValidation.xsd` — esquema XSD con operacion `validarUsuarioPorClave`
+- **Endpoint**: `mx.uv.sicae.users.ws.UserValidationEndpoint` — expuesto en `POST /ws/userValidation.wsdl`
+- **Config**: `WebServiceConfig` con MessageDispatcherServlet en `/ws/*`
+- **Cliente**: `mx.uv.sicae.parking.client.UserServiceClientImpl` — usa WebServiceTemplate para llamar al UserService via SOAP
+- **URL en Docker**: `http://user-service:8082/ws`
+- **URL local**: `http://localhost:8082/ws`
+
+### gRPC/RPC - VehicleService (Pendiente)
+
+Contrato `.proto` y endpoint gRPC en VehicleService aun no implementados.
+
 ## Pendiente para el equipo
 
 - Confirmar con el profesor si basta REST + SOAP, REST + gRPC o si pide SOAP + RPC + gRPC.
-- Definir los contratos reales en `contracts/`.
-- Implementar clientes internos en ParkingService.
+- Implementar contrato gRPC en VehicleService y cliente en ParkingService.
 - Documentar en la presentacion que el lenguaje es Java, mientras que las tecnologias de integracion son REST, SOAP y gRPC/RPC.
