@@ -6,24 +6,25 @@ import java.util.List;
 import mx.uv.sicae.parking.model.Espacio;
 import mx.uv.sicae.parking.model.RespuestaApi;
 import mx.uv.sicae.parking.service.EspacioService;
+import mx.uv.sicae.parking.config.JwtUtil;
 
 @RestController
 @RequestMapping("/parking/spaces")
 public class EspacioController {
 
     private final EspacioService espacioService;
+    private final JwtUtil jwtUtil;
 
-    public EspacioController(EspacioService espacioService) {
+    public EspacioController(EspacioService espacioService, JwtUtil jwtUtil) {
         this.espacioService = espacioService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
     public ResponseEntity<RespuestaApi<List<Espacio>>> consultarEspacios(
         @RequestHeader(value = "Authorization", required = false) String token) {
         try {
-            if (token == null || token.trim().isEmpty()) {
-                throw new IllegalArgumentException("Token JWT valido es requerido");
-            }
+            jwtUtil.obtenerIdUsuario(token);
 
             List<Espacio> espacios = espacioService.obtenerTodos();
             RespuestaApi<List<Espacio>> respuesta = new RespuestaApi<>(true, "Espacios consultados correctamente", espacios, null);
