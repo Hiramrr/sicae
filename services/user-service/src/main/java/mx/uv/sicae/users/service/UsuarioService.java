@@ -94,8 +94,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse editarUsuario(Integer idUsuario, EditarUsuarioRequest request,
-                                          Integer idUsuarioAutenticado, Integer idRolAutenticado) {
+    public UsuarioResponse editarUsuario(Integer idUsuario, EditarUsuarioRequest request, Integer idUsuarioAutenticado, Integer idRolAutenticado) {
         validarIdUsuario(idUsuario);
         validarPropietarioOAdministrador(idUsuario, idUsuarioAutenticado, idRolAutenticado);
         if (request == null) {
@@ -131,10 +130,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse cambiarEstatus(Integer idUsuario,
-                                          CambiarEstatusRequest request,
-                                          Integer idUsuarioAutenticado,
-                                          Integer idRolAutenticado) {
+    public UsuarioResponse cambiarEstatus(Integer idUsuario, CambiarEstatusRequest request, Integer idUsuarioAutenticado, Integer idRolAutenticado) {
         validarAdministrador(idRolAutenticado);
         validarIdUsuario(idUsuario);
         if (request == null) {
@@ -207,7 +203,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("No se puede editar directamente el usuario");
         }
         if (tieneTexto(request.getPassword())) {
-            throw new IllegalArgumentException("No se puede editar directamente la contrasena");
+            throw new IllegalArgumentException("No se puede editar directamente la contraseña");
         }
         if (tieneTexto(request.getClaveUsuario())) {
             throw new IllegalArgumentException("No se puede editar directamente la clave del usuario");
@@ -293,7 +289,7 @@ public class UsuarioService {
     }
 
     private String validarPassword(String valor) {
-        return validarTextoObligatorio(valor, "contrasena", MAX_PASSWORD_BCRYPT);
+        return validarTextoObligatorio(valor, "contraseña", MAX_PASSWORD_BCRYPT);
     }
 
     private String validarEmail(String valor) {

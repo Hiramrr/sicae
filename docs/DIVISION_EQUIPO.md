@@ -10,23 +10,23 @@ Servicio de Autenticacion.
 
 ### Lo que debe desarrollar
 
-Implementar el servicio de login del sistema. Este servicio permite autenticar usuarios mediante credenciales validas, es decir, usuario y contrasena, para obtener acceso al sistema.
+Implementar el servicio de login del sistema. Este servicio permite autenticar usuarios mediante credenciales validas, es decir, usuario y contraseña, para obtener acceso al sistema.
 
 ### Reglas de negocio esperadas
 
 - Solo usuarios registrados pueden iniciar sesion.
 - Solo usuarios activos pueden iniciar sesion.
-- Los datos obligatorios son usuario y contrasena.
+- Los datos obligatorios son usuario y contraseña.
 - El servicio debe generar un token de autenticacion JWT.
 - El token generado debe usarse para consumir los demas servicios del sistema.
-- La contrasena debe validarse considerando que estara cifrada con bcrypt en la base de datos.
+- La contraseña debe validarse considerando que estara cifrada con bcrypt en la base de datos.
 
 ### Validaciones que debe implementar
 
-- Validar que usuario y contrasena no vengan vacios.
+- Validar que usuario y contraseña no vengan vacios.
 - Validar el tamano de los campos.
 - Verificar que el usuario exista en la base de datos.
-- Verificar que la contrasena sea correcta.
+- Verificar que la contraseña sea correcta.
 - Verificar que el usuario tenga estatus activo.
 
 ### Respuesta esperada
@@ -76,7 +76,7 @@ Reglas de negocio:
 - La solicitud debe incluir un token JWT valido.
 - No deben existir usuarios con el mismo correo.
 - No deben existir usuarios con el mismo username.
-- La contrasena debe cifrarse con bcrypt.
+- La contraseña debe cifrarse con bcrypt.
 - El usuario debe quedar activo por defecto.
 - La clave de usuario debe generarse internamente.
 - La clave de usuario debe ser unica.
@@ -90,7 +90,7 @@ Datos obligatorios:
 - apellido paterno;
 - programa educativo;
 - usuario;
-- contrasena;
+- contraseña;
 - correo;
 - telefono;
 - tiempo de registro;
@@ -118,7 +118,7 @@ Reglas de negocio:
 - El usuario debe autenticarse previamente.
 - La solicitud debe incluir token JWT valido.
 - No se puede editar directamente el usuario.
-- No se puede editar directamente la contrasena.
+- No se puede editar directamente la contraseña.
 - No se puede editar directamente la clave del usuario.
 
 Datos obligatorios:
@@ -129,7 +129,7 @@ Datos obligatorios:
 - apellido paterno;
 - programa educativo;
 - usuario;
-- contrasena;
+- contraseña;
 - correo;
 - telefono;
 - tiempo de actualizacion.

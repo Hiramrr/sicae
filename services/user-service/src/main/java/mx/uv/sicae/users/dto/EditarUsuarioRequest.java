@@ -14,7 +14,7 @@ public class EditarUsuarioRequest {
     private String telefono;
     @JsonAlias("usuario")
     private String username;
-    @JsonAlias({"contrasena", "contraseña"})
+    @JsonAlias({"contraseña"})
     private String password;
     private String claveUsuario;
 

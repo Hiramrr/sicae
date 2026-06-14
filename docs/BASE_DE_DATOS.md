@@ -26,7 +26,7 @@ Estas credenciales son solo para el entorno escolar/local del proyecto.
 | `sicaevehiculo` | `vehicles-db` | `3307` | `sicae_vehiculo_app` | `sicae123` |
 | `sicaeEstacionamiento` | `parking-db` | `3308` | `sicae_estacionamiento_app` | `sicae123` |
 
-Para MySQL, el usuario `root` usa la contrasena `root123`.
+Para MySQL, el usuario `root` usa la contraseña `root123`.
 
 ## Usuarios
 
@@ -65,7 +65,7 @@ Datos semilla importantes:
 - Email: `admin@example.com`
 - Rol: `administrador`
 - Clave de usuario: `fei`
-- La contrasena viene como hash bcrypt en el script. Confirmen con el profesor la contrasena en texto claro para las pruebas de login.
+- La contraseña viene como hash bcrypt en el script. Confirmen con el profesor la contraseña en texto claro para las pruebas de login.
 
 ## Vehiculos
 

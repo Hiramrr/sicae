@@ -22,7 +22,7 @@ Payload sugerido:
 ```json
 {
   "usuario": "admin",
-  "contrasena": "admin123"
+  "contraseña": "admin123"
 }
 ```
 

@@ -22,7 +22,7 @@ Para generar tu token, realiza la siguiente petición desde Postman:
 ```json
 {
   "usuario": "prueba",
-  "contrasena": "prueba"
+  "contraseña": "prueba"
 }
 ```
 

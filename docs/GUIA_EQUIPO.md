@@ -3,7 +3,7 @@
 ## Reglas de colaboracion
 
 - Cada integrante debe programar, probar y explicar su parte.
-- No subir contrasenas reales ni dumps privados.
+- No subir contraseñas reales ni dumps privados.
 - Cada cambio debe quedar asociado a una rama o commit claro.
 - Antes de integrar, probar el endpoint en Postman/Hoppscotch.
 - Documentar cambios de rutas en `docs/API_CONTRATOS.md`.

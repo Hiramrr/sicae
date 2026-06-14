@@ -28,7 +28,7 @@ No incluye:
 
 ### AuthService
 
-- Login con usuario y contrasena.
+- Login con usuario y contraseña.
 - Solo usuarios registrados y activos pueden iniciar sesion.
 - Genera token JWT.
 - Responde con datos del usuario y token.

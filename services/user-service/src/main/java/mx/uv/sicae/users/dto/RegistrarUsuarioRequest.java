@@ -11,7 +11,7 @@ public class RegistrarUsuarioRequest {
     private String apellidoMaterno;
     @JsonAlias("usuario")
     private String username;
-    @JsonAlias({"contrasena", "contraseña"})
+    @JsonAlias({"contraseña"})
     private String password;
     @JsonAlias("correo")
     private String email;

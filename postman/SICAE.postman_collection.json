@@ -67,7 +67,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"usuario\":\"admin\",\"contrasena\":\"admin123\"}"
+              "raw": "{\"usuario\":\"admin\",\"contraseña\":\"admin123\"}"
             },
             "url": "{{auth_base_url}}/auth/login"
           }
@@ -89,7 +89,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"usuario\":\"jperez\",\"contrasena\":\"Cambiar123\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000000\"}"
+              "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"usuario\":\"jperez\",\"contraseña\":\"Cambiar123\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000000\"}"
             },
             "url": "{{user_base_url}}/users"
           }

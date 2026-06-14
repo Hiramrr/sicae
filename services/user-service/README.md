@@ -11,12 +11,12 @@ Responsable del registro, edicion, consulta de perfil y cambio de estatus de usu
 - Apache Tomcat
 - PostgreSQL
 - JWT para autenticacion y autorizacion
-- bcrypt para cifrar contrasenas
+- bcrypt para cifrar contraseñas
 
 ## Responsabilidades
 
 - Registrar usuarios solo por administradores.
-- Cifrar contrasenas con bcrypt.
+- Cifrar contraseñas con bcrypt.
 - Generar claves de usuario unicas con patron acordado por el equipo.
 - Editar informacion permitida.
 - Consultar perfil.
