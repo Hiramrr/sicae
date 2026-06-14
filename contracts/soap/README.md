@@ -34,5 +34,6 @@ validarUsuarioPorClave(claveUsuario) -> UsuarioValidado
   - Expuesto en: `POST /ws/userValidation.wsdl` (puerto 8082)
 - **Client (ParkingService):** `mx.uv.sicae.parking.client.UserServiceClientImpl`
   - Usa `WebServiceTemplate` para llamar al endpoint SOAP
-  - URL en Docker: `http://user-service:8082/ws`
-  - URL local: `http://localhost:8082/ws`
+  - URL configurable via `USER_SERVICE_SOAP_URL` (env) o `user.service.soap.url` (properties)
+  - Default local: `http://localhost:8082/ws`
+  - Docker: `http://user-service:8082/ws` (ya seteado en docker-compose.yml)

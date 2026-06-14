@@ -29,9 +29,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
         try {
             ValidarUsuarioPorClaveResponse response = (ValidarUsuarioPorClaveResponse)
-                    webServiceTemplate.marshalSendAndReceive(
-                            "http://user-service:8082/ws",
-                            request);
+                    webServiceTemplate.marshalSendAndReceive(request);
 
             Usuario usuario = new Usuario();
             usuario.setIdUsuario(response.getIdUsuario());
