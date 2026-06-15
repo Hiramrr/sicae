@@ -37,6 +37,9 @@ public class VehiculoController {
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             List<VehiculoResponse> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculos consultados correctamente", vehiculos));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaApi.fail("No autorizado", e.getMessage()));
         } catch (IllegalArgumentException e) {
             // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
@@ -62,6 +65,9 @@ public class VehiculoController {
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.buscarPorPlaca(placa, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo consultado correctamente", vehiculo));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaApi.fail("No autorizado", e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
                     .body(RespuestaApi.fail("No se pudo consultar el vehiculo", e.getMessage()));
@@ -85,6 +91,9 @@ public class VehiculoController {
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
             return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaApi.fail("No autorizado", e.getMessage()));
         } catch (IllegalArgumentException e) {
             // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
@@ -111,6 +120,9 @@ public class VehiculoController {
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo actualizado correctamente", vehiculo));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaApi.fail("No autorizado", e.getMessage()));
         } catch (IllegalArgumentException e) {
             // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()
@@ -137,6 +149,9 @@ public class VehiculoController {
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Estatus del vehiculo actualizado correctamente", vehiculo));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaApi.fail("No autorizado", e.getMessage()));
         } catch (IllegalArgumentException e) {
             // Validaciones de datos o token invalido
             return ResponseEntity.badRequest()

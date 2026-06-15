@@ -36,7 +36,7 @@ public class VehiculoService {
     }
 
     public VehiculoResponse buscarPorPlaca(String placa, Integer idUsuarioAutenticado) {
-        validarPlacaConsulta(placa);
+        validarPlaca(placa);
 
         Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(normalizarPlaca(placa));
         if (resultado.isEmpty()) {
@@ -158,9 +158,7 @@ public class VehiculoService {
         if (request.getPlaca() == null || request.getPlaca().trim().isEmpty()) {
             throw new IllegalArgumentException("placa es obligatoria");
         }
-        if (request.getPlaca().trim().length() > 7) {
-            throw new IllegalArgumentException("placa no debe exceder 7 caracteres");
-        }
+        validarPlaca(request.getPlaca());
         if (request.getColor() == null || request.getColor().trim().isEmpty()) {
             throw new IllegalArgumentException("color es obligatorio");
         }
@@ -206,15 +204,18 @@ public class VehiculoService {
         }
     }
 
-    private void validarPlacaConsulta(String placa) {
+    private void validarPlaca(String placa) {
         if (placa == null || placa.trim().isEmpty()) {
             throw new IllegalArgumentException("placa es obligatoria");
         }
-        if (placa.trim().length() < 7) {
-            throw new IllegalArgumentException("placa debe tener al menos 7 caracteres");
+
+        String placaNormalizada = normalizarPlaca(placa);
+        if (placaNormalizada.length() < 6 || placaNormalizada.length() > 7) {
+            throw new IllegalArgumentException("placa debe tener entre 6 y 7 caracteres");
         }
-        if (placa.trim().length() > 7) {
-            throw new IllegalArgumentException("placa no debe exceder 7 caracteres");
+
+        if (!placaNormalizada.matches("^[A-Z0-9]+$")) {
+            throw new IllegalArgumentException("placa solo debe contener letras y numeros");
         }
     }
 

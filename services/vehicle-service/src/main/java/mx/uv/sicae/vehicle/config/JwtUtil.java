@@ -15,16 +15,16 @@ public class JwtUtil {
 
     public Integer obtenerIdUsuario(String authorizationHeader) {
         if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
-            throw new IllegalArgumentException("Debe enviar el token de autenticacion");
+            throw new SecurityException("Debe enviar el token de autenticacion");
         }
 
         if (!authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("El formato del token no es correcto");
+            throw new SecurityException("El formato del token no es correcto");
         }
 
         String token = authorizationHeader.substring(7).trim();
         if (token.isEmpty()) {
-            throw new IllegalArgumentException("Debe enviar el token de autenticacion");
+            throw new SecurityException("Debe enviar el token de autenticacion");
         }
 
         try {
@@ -36,13 +36,13 @@ public class JwtUtil {
 
             Integer idUsuario = claims.get("idUsuario", Integer.class);
             if (idUsuario == null) {
-                throw new IllegalArgumentException("No se pudo obtener el usuario del token");
+                throw new SecurityException("No se pudo obtener el usuario del token");
             }
             return idUsuario;
-        } catch (IllegalArgumentException e) {
+        } catch (SecurityException e) {
             throw e;
         } catch (Exception e) {
-            throw new IllegalArgumentException("El token no es valido o ya expiro");
+            throw new SecurityException("El token no es valido o ya expiro");
         }
     }
 
