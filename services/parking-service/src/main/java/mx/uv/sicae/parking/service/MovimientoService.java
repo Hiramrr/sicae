@@ -35,8 +35,15 @@ public class MovimientoService {
         }
 
         Vehiculo vehiculo = vehicleServiceClient.validarVehiculoPorPlaca(peticion.getPlaca());
-        if (vehiculo == null || !vehiculo.isActivo() || !vehiculo.getIdUsuario().equals(usuario.getIdUsuario())) {
-            throw new IllegalArgumentException("El vehiculo no es valido, esta inactivo o no pertenece al usuario");
+
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("DEBUG 1: El vehiculo llego como NULL. Significa que el vehicle-service rechazo la peticion (posible error 400 por falta de token, revisa logs).");
+        }
+        if (!vehiculo.isActivo()) {
+            throw new IllegalArgumentException("DEBUG 2: El vehiculo llego bien, pero 'activo' es false. (Significa que el parking-service aun no detecta el cambio de @JsonProperty que hicimos antes).");
+        }
+        if (!vehiculo.getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new IllegalArgumentException("DEBUG 3: El vehiculo le pertenece al ID " + vehiculo.getIdUsuario() + " pero tu clave ALUMNO001 es del ID " + usuario.getIdUsuario());
         }
 
         List<Integer> idsVehiculosDelUsuario = vehicleServiceClient.obtenerIdsVehiculosPorUsuario(usuario.getIdUsuario());

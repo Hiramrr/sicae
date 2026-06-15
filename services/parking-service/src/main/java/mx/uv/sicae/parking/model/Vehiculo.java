@@ -1,9 +1,13 @@
 package mx.uv.sicae.parking.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Vehiculo {
     private Integer idVehiculo;
     private Integer idUsuario;
     private String placa;
+
+    @JsonProperty("estatus")
     private boolean activo;
 
     public Integer getIdVehiculo() {
