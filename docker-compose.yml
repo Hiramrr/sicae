@@ -101,6 +101,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: sicae123
       JWT_SECRET: sicae-dev-secret-key-muy-larga-y-segura-12345
       USER_SERVICE_SOAP_URL: http://user-service:8082/ws
+      USER_SERVICE_REST_URL: http://user-service:8082/users
       VEHICLE_SERVICE_REST_URL: http://vehicle-service:8083/api/vehiculos
     ports:
       - "8084:8080"
