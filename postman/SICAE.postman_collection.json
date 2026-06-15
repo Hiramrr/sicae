@@ -1,53 +1,12 @@
 {
   "info": {
+    "_postman_id": "d77cc975-49a7-4f15-a330-9148746ad518",
     "name": "SICAE - API base",
     "description": "# Documentación SICAE - Equipo 5\n\nEsta colección contiene los endpoints para realizar las pruebas manuales de los microservicios del proyecto SICAE.\n\n## Integrantes del Equipo:\n- Atanasio Barrientos Luis Alfredo\n- Baez Ramos Sarah Jocelyn\n- Gomez Maldonado Humberto Hiram\n- Hernández Holguín Rodrigo\n\n---\n\n## Arquitectura del Sistema\n\nSICAE opera bajo una arquitectura de microservicios distribuidos, separados por dominio funcional:\n- **AuthService:** Punto de entrada que autentica usuarios mediante credenciales válidas y emite tokens JWT.\n- **UserService:** Administra el registro, perfiles y estatus de los usuarios.\n- **VehicleService:** Gestiona el registro, edición y búsqueda de vehículos asociados a los usuarios.\n- **ParkingService:** Controla el registro de movimientos (entradas y salidas), cálculo automático de permanencia y disponibilidad de espacios.\n\nCada microservicio opera de manera independiente y administra exclusivamente su propia base de datos. Para que los microservicios se comuniquen de forma segura, el sistema exige que el cliente pase por el `AuthService` primero. El token JWT generado allí actúa como mecanismo de autenticación para el consumo de todos los demás servicios protegidos.",
-    "schema": "[https://schema.getpostman.com/json/collection/v2.1.0/collection.json](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54260950",
+    "_collection_link": "https://go.postman.co/collection/54260950-d77cc975-49a7-4f15-a330-9148746ad518?source=collection_link"
   },
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{jwt_token}}",
-        "type": "string"
-      }
-    ]
-  },
-  "variable": [
-    {
-      "key": "auth_base_url",
-      "value": "http://localhost:8081"
-    },
-    {
-      "key": "user_base_url",
-      "value": "http://localhost:8082"
-    },
-    {
-      "key": "vehicle_base_url",
-      "value": "http://localhost:8083"
-    },
-    {
-      "key": "parking_base_url",
-      "value": "http://localhost:8084"
-    },
-    {
-      "key": "jwt_token",
-      "value": ""
-    },
-    {
-      "key": "idUsuario",
-      "value": "1"
-    },
-    {
-      "key": "idVehiculo",
-      "value": "1"
-    },
-    {
-      "key": "idMovimiento",
-      "value": "1"
-    }
-  ],
   "item": [
     {
       "name": "AuthService",
@@ -157,8 +116,17 @@
               "mode": "raw",
               "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"usuario\":\"jperez\",\"contraseña\":\"Cambiar123\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000000\"}"
             },
-            "url": "{{user_base_url}}/users"
-          }
+            "url": {
+              "raw": "{{user_base_url}}/users",
+              "host": [
+                "{{user_base_url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Editar usuario",
@@ -174,15 +142,36 @@
               "mode": "raw",
               "raw": "{\"idRol\":1,\"idTipoUsuario\":1,\"nombre\":\"Juan\",\"apellidoPaterno\":\"Perez\",\"programaEducativo\":\"ISTI\",\"correo\":\"jperez@example.com\",\"telefono\":\"2280000001\"}"
             },
-            "url": "{{user_base_url}}/users/{{idUsuario}}"
-          }
+            "url": {
+              "raw": "{{user_base_url}}/users/{{idUsuario}}",
+              "host": [
+                "{{user_base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{idUsuario}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Ver perfil",
           "request": {
             "method": "GET",
-            "url": "{{user_base_url}}/users/{{idUsuario}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{user_base_url}}/users/{{idUsuario}}",
+              "host": [
+                "{{user_base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{idUsuario}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Cambiar estatus",
@@ -198,8 +187,19 @@
               "mode": "raw",
               "raw": "{\"activo\":false}"
             },
-            "url": "{{user_base_url}}/users/{{idUsuario}}/status"
-          }
+            "url": {
+              "raw": "{{user_base_url}}/users/{{idUsuario}}/status",
+              "host": [
+                "{{user_base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{idUsuario}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -217,7 +217,18 @@
                 "type": "text"
               }
             ],
-            "url": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}"
+            "url": {
+              "raw": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}",
+              "host": [
+                "{{vehicle_base_url}}"
+              ],
+              "path": [
+                "api",
+                "vehiculos",
+                "usuario",
+                "{{idUsuario}}"
+              ]
+            }
           },
           "response": [
             {
@@ -231,7 +242,18 @@
                     "type": "text"
                   }
                 ],
-                "url": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}"
+                "url": {
+                  "raw": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}",
+                  "host": [
+                    "{{vehicle_base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vehiculos",
+                    "usuario",
+                    "{{idUsuario}}"
+                  ]
+                }
               },
               "status": "OK",
               "code": 200,
@@ -266,7 +288,17 @@
               "mode": "raw",
               "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Blanco\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo de prueba\"\n}"
             },
-            "url": "{{vehicle_base_url}}/api/vehiculos/registrar"
+            "url": {
+              "raw": "{{vehicle_base_url}}/api/vehiculos/registrar",
+              "host": [
+                "{{vehicle_base_url}}"
+              ],
+              "path": [
+                "api",
+                "vehiculos",
+                "registrar"
+              ]
+            }
           },
           "response": [
             {
@@ -288,7 +320,17 @@
                   "mode": "raw",
                   "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Blanco\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo de prueba\"\n}"
                 },
-                "url": "{{vehicle_base_url}}/api/vehiculos/registrar"
+                "url": {
+                  "raw": "{{vehicle_base_url}}/api/vehiculos/registrar",
+                  "host": [
+                    "{{vehicle_base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vehiculos",
+                    "registrar"
+                  ]
+                }
               },
               "status": "Created",
               "code": 201,
@@ -323,7 +365,18 @@
               "mode": "raw",
               "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Gris\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo actualizado\"\n}"
             },
-            "url": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}"
+            "url": {
+              "raw": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}",
+              "host": [
+                "{{vehicle_base_url}}"
+              ],
+              "path": [
+                "api",
+                "vehiculos",
+                "editar",
+                "{{idVehiculo}}"
+              ]
+            }
           },
           "response": [
             {
@@ -345,7 +398,18 @@
                   "mode": "raw",
                   "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Gris\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo actualizado\"\n}"
                 },
-                "url": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}"
+                "url": {
+                  "raw": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}",
+                  "host": [
+                    "{{vehicle_base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vehiculos",
+                    "editar",
+                    "{{idVehiculo}}"
+                  ]
+                }
               },
               "status": "OK",
               "code": 200,
@@ -380,7 +444,18 @@
               "mode": "raw",
               "raw": "{\n  \"idUsuario\": 1,\n  \"activo\": false\n}"
             },
-            "url": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}"
+            "url": {
+              "raw": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}",
+              "host": [
+                "{{vehicle_base_url}}"
+              ],
+              "path": [
+                "api",
+                "vehiculos",
+                "estatus",
+                "{{idVehiculo}}"
+              ]
+            }
           },
           "response": [
             {
@@ -402,7 +477,18 @@
                   "mode": "raw",
                   "raw": "{\n  \"idUsuario\": 1,\n  \"activo\": false\n}"
                 },
-                "url": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}"
+                "url": {
+                  "raw": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}",
+                  "host": [
+                    "{{vehicle_base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vehiculos",
+                    "estatus",
+                    "{{idVehiculo}}"
+                  ]
+                }
               },
               "status": "OK",
               "code": 200,
@@ -437,8 +523,79 @@
               "mode": "raw",
               "raw": "{\"claveUsuario\":\"RGR-254\",\"placa\":\"ABC123\",\"idEspacio\":1,\"tarifa\":15.0}"
             },
-            "url": "{{parking_base_url}}/parking/movements/entry"
-          }
+            "url": {
+              "raw": "{{parking_base_url}}/parking/movements/entry",
+              "host": [
+                "{{parking_base_url}}"
+              ],
+              "path": [
+                "parking",
+                "movements",
+                "entry"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Entrada registrada correctamente",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZFJvbCI6MSwiaWRVc3VhcmlvIjozLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwic3ViIjoiYWx1bW5vIiwiaWF0IjoxNzgxNDkwMjM1LCJleHAiOjE3ODE1NzY2MzV9.I3OFhPX-NmOHEn2UUezRkRf8ja50NeK7tXwo4pmQvJs",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"claveUsuario\": \"ALUMNO001\",\r\n  \"placa\": \"ABC123\",\r\n  \"idEspacio\": 1,\r\n  \"tarifaHora\": 15.0\r\n}"
+                },
+                "url": {
+                  "raw": "{{parking_base_url}}/parking/movements/entry",
+                  "host": [
+                    "{{parking_base_url}}"
+                  ],
+                  "path": [
+                    "parking",
+                    "movements",
+                    "entry"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 15 Jun 2026 17:55:15 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=20"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Vehiculo ingresado correctamente\",\n    \"data\": {\n        \"idMovimiento\": 4,\n        \"tiempoEntrada\": \"2026-06-15T17:55:15.492753809\",\n        \"tarifaHora\": 15,\n        \"espacioAsignado\": \"A001\"\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Registrar salida",
@@ -454,17 +611,190 @@
               "mode": "raw",
               "raw": "{\"claveUsuario\":\"RGR-254\",\"placa\":\"ABC123\"}"
             },
-            "url": "{{parking_base_url}}/parking/movements/{{idMovimiento}}/exit"
-          }
+            "url": {
+              "raw": "{{parking_base_url}}/parking/movements/{{idMovimiento}}/exit",
+              "host": [
+                "{{parking_base_url}}"
+              ],
+              "path": [
+                "parking",
+                "movements",
+                "{{idMovimiento}}",
+                "exit"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Salida registrada correctamente",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZFJvbCI6MSwiaWRVc3VhcmlvIjozLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwic3ViIjoiYWx1bW5vIiwiaWF0IjoxNzgxNDkwMjM1LCJleHAiOjE3ODE1NzY2MzV9.I3OFhPX-NmOHEn2UUezRkRf8ja50NeK7tXwo4pmQvJs",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"claveUsuario\": \"ALUMNO001\",\r\n  \"placa\": \"ABC123\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{parking_base_url}}/parking/movements/4/exit",
+                  "host": [
+                    "{{parking_base_url}}"
+                  ],
+                  "path": [
+                    "parking",
+                    "movements",
+                    "4",
+                    "exit"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 15 Jun 2026 17:57:40 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=20"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Salida registrada correctamente\",\n    \"data\": {\n        \"idMovimiento\": 4,\n        \"tiempoEntrada\": \"2026-06-15T17:55:15\",\n        \"tiempoSalida\": \"2026-06-15T17:57:40.300873159\",\n        \"horasCobradas\": 1,\n        \"costoTotal\": 15,\n        \"tarifaHora\": 15,\n        \"espacioAsignado\": \"A001\"\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Consultar espacios",
           "request": {
             "method": "GET",
-            "url": "{{parking_base_url}}/parking/spaces"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{parking_base_url}}/parking/spaces",
+              "host": [
+                "{{parking_base_url}}"
+              ],
+              "path": [
+                "parking",
+                "spaces"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Espacios consultados correctamente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{parking_base_url}}/parking/spaces",
+                  "host": [
+                    "{{parking_base_url}}"
+                  ],
+                  "path": [
+                    "parking",
+                    "spaces"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 15 Jun 2026 17:48:55 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=20"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Espacios consultados correctamente\",\n    \"data\": [\n        {\n            \"idEspacio\": 1,\n            \"claveEspacio\": \"A001\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 2,\n            \"claveEspacio\": \"A002\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 3,\n            \"claveEspacio\": \"A003\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 4,\n            \"claveEspacio\": \"A004\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 5,\n            \"claveEspacio\": \"A005\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 6,\n            \"claveEspacio\": \"A006\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 7,\n            \"claveEspacio\": \"A007\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 8,\n            \"claveEspacio\": \"A008\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 9,\n            \"claveEspacio\": \"A009\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 10,\n            \"claveEspacio\": \"A010\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 11,\n            \"claveEspacio\": \"A011\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 12,\n            \"claveEspacio\": \"A012\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 13,\n            \"claveEspacio\": \"A013\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 14,\n            \"claveEspacio\": \"A014\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 15,\n            \"claveEspacio\": \"A015\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 16,\n            \"claveEspacio\": \"A016\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 17,\n            \"claveEspacio\": \"A017\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 18,\n            \"claveEspacio\": \"A018\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 19,\n            \"claveEspacio\": \"A019\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 20,\n            \"claveEspacio\": \"A020\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 21,\n            \"claveEspacio\": \"A021\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 22,\n            \"claveEspacio\": \"A022\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 23,\n            \"claveEspacio\": \"A023\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 24,\n            \"claveEspacio\": \"A024\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 25,\n            \"claveEspacio\": \"A025\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 26,\n            \"claveEspacio\": \"A026\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 27,\n            \"claveEspacio\": \"A027\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 28,\n            \"claveEspacio\": \"A028\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 29,\n            \"claveEspacio\": \"A029\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 30,\n            \"claveEspacio\": \"A030\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 31,\n            \"claveEspacio\": \"A031\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 32,\n            \"claveEspacio\": \"A032\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 33,\n            \"claveEspacio\": \"A033\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 34,\n            \"claveEspacio\": \"A034\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 35,\n            \"claveEspacio\": \"A035\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 36,\n            \"claveEspacio\": \"A036\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 37,\n            \"claveEspacio\": \"A037\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 38,\n            \"claveEspacio\": \"A038\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 39,\n            \"claveEspacio\": \"A039\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 40,\n            \"claveEspacio\": \"A040\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 41,\n            \"claveEspacio\": \"A041\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 42,\n            \"claveEspacio\": \"A042\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 43,\n            \"claveEspacio\": \"A043\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 44,\n            \"claveEspacio\": \"A044\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 45,\n            \"claveEspacio\": \"A045\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 46,\n            \"claveEspacio\": \"A046\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 47,\n            \"claveEspacio\": \"A047\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 48,\n            \"claveEspacio\": \"A048\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 49,\n            \"claveEspacio\": \"A049\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 50,\n            \"claveEspacio\": \"A050\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 51,\n            \"claveEspacio\": \"A051\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 52,\n            \"claveEspacio\": \"A052\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 53,\n            \"claveEspacio\": \"A053\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 54,\n            \"claveEspacio\": \"A054\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 55,\n            \"claveEspacio\": \"A055\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 56,\n            \"claveEspacio\": \"A056\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 57,\n            \"claveEspacio\": \"A057\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 58,\n            \"claveEspacio\": \"A058\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 59,\n            \"claveEspacio\": \"A059\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 60,\n            \"claveEspacio\": \"A060\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 61,\n            \"claveEspacio\": \"A061\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 62,\n            \"claveEspacio\": \"A062\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 63,\n            \"claveEspacio\": \"A063\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 64,\n            \"claveEspacio\": \"A064\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 65,\n            \"claveEspacio\": \"A065\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 66,\n            \"claveEspacio\": \"A066\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 67,\n            \"claveEspacio\": \"A067\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 68,\n            \"claveEspacio\": \"A068\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 69,\n            \"claveEspacio\": \"A069\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 70,\n            \"claveEspacio\": \"A070\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 71,\n            \"claveEspacio\": \"A071\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 72,\n            \"claveEspacio\": \"A072\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 73,\n            \"claveEspacio\": \"A073\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 74,\n            \"claveEspacio\": \"A074\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 75,\n            \"claveEspacio\": \"A075\",\n            \"tipo\": \"A\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 76,\n            \"claveEspacio\": \"M001\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 77,\n            \"claveEspacio\": \"M002\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 78,\n            \"claveEspacio\": \"M003\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 79,\n            \"claveEspacio\": \"M004\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 80,\n            \"claveEspacio\": \"M005\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 81,\n            \"claveEspacio\": \"M006\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 82,\n            \"claveEspacio\": \"M007\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 83,\n            \"claveEspacio\": \"M008\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 84,\n            \"claveEspacio\": \"M009\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 85,\n            \"claveEspacio\": \"M010\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 86,\n            \"claveEspacio\": \"M011\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 87,\n            \"claveEspacio\": \"M012\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 88,\n            \"claveEspacio\": \"M013\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 89,\n            \"claveEspacio\": \"M014\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 90,\n            \"claveEspacio\": \"M015\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 91,\n            \"claveEspacio\": \"M016\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 92,\n            \"claveEspacio\": \"M017\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 93,\n            \"claveEspacio\": \"M018\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 94,\n            \"claveEspacio\": \"M019\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 95,\n            \"claveEspacio\": \"M020\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 96,\n            \"claveEspacio\": \"M021\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 97,\n            \"claveEspacio\": \"M022\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 98,\n            \"claveEspacio\": \"M023\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 99,\n            \"claveEspacio\": \"M024\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        },\n        {\n            \"idEspacio\": 100,\n            \"claveEspacio\": \"M025\",\n            \"tipo\": \"M\",\n            \"ocupado\": false,\n            \"estatus\": true\n        }\n    ]\n}"
+            }
+          ]
         }
       ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "auth_base_url",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "user_base_url",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "vehicle_base_url",
+      "value": "http://localhost:8083"
+    },
+    {
+      "key": "parking_base_url",
+      "value": "http://localhost:8084"
+    },
+    {
+      "key": "jwt_token",
+      "value": ""
+    },
+    {
+      "key": "idUsuario",
+      "value": "1"
+    },
+    {
+      "key": "idVehiculo",
+      "value": "1"
+    },
+    {
+      "key": "idMovimiento",
+      "value": "1"
     }
   ]
 }
