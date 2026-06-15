@@ -212,12 +212,40 @@
             "method": "GET",
             "header": [
               {
-                "key": "X-User-Id",
-                "value": "{{idUsuario}}"
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
               }
             ],
             "url": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}"
-          }
+          },
+          "response": [
+            {
+              "name": "Vehiculos consultados correctamente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwt_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": "{{vehicle_base_url}}/api/vehiculos/usuario/{{idUsuario}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculos consultados correctamente\",\n  \"data\": [\n    {\n      \"idUsuario\": 1,\n      \"idVehiculo\": 1,\n      \"idModelo\": 1,\n      \"modelo\": \"Versa\",\n      \"idMarca\": 1,\n      \"marca\": \"Nissan\",\n      \"placa\": \"ABC123\",\n      \"color\": \"Blanco\",\n      \"anio\": 2020,\n      \"descripcion\": \"Vehiculo de prueba\",\n      \"estatus\": true\n    }\n  ],\n  \"error\": null\n}"
+            }
+          ]
         },
         {
           "name": "Registrar vehiculo",
@@ -225,20 +253,56 @@
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
               },
               {
-                "key": "X-User-Id",
-                "value": "{{idUsuario}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Blanco\",\"anio\":2020,\"descripcion\":\"Vehiculo de prueba\"}"
+              "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Blanco\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo de prueba\"\n}"
             },
             "url": "{{vehicle_base_url}}/api/vehiculos/registrar"
-          }
+          },
+          "response": [
+            {
+              "name": "Vehiculo registrado correctamente",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwt_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Blanco\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo de prueba\"\n}"
+                },
+                "url": "{{vehicle_base_url}}/api/vehiculos/registrar"
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo registrado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Blanco\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo de prueba\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
+            }
+          ]
         },
         {
           "name": "Editar vehiculo",
@@ -246,20 +310,56 @@
             "method": "PUT",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
               },
               {
-                "key": "X-User-Id",
-                "value": "{{idUsuario}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"idUsuario\":1,\"idModelo\":1,\"placa\":\"ABC123\",\"color\":\"Gris\",\"anio\":2020,\"descripcion\":\"Vehiculo actualizado\"}"
+              "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Gris\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo actualizado\"\n}"
             },
             "url": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}"
-          }
+          },
+          "response": [
+            {
+              "name": "Vehiculo actualizado correctamente",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwt_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idUsuario\": 1,\n  \"idModelo\": 1,\n  \"placa\": \"ABC123\",\n  \"color\": \"Gris\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehiculo actualizado\"\n}"
+                },
+                "url": "{{vehicle_base_url}}/api/vehiculos/editar/{{idVehiculo}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
+            }
+          ]
         },
         {
           "name": "Cambiar estatus vehiculo",
@@ -267,20 +367,56 @@
             "method": "PATCH",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
               },
               {
-                "key": "X-User-Id",
-                "value": "{{idUsuario}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"activo\":false}"
+              "raw": "{\n  \"idUsuario\": 1,\n  \"activo\": false\n}"
             },
             "url": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}"
-          }
+          },
+          "response": [
+            {
+              "name": "Estatus del vehiculo actualizado correctamente",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{jwt_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idUsuario\": 1,\n  \"activo\": false\n}"
+                },
+                "url": "{{vehicle_base_url}}/api/vehiculos/estatus/{{idVehiculo}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Estatus del vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": false\n  },\n  \"error\": null\n}"
+            }
+          ]
         }
       ]
     },
