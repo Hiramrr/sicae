@@ -41,7 +41,7 @@ public class JwtUtil {
         } catch (IllegalArgumentException e) {
             throw e;
         } catch (Exception e) {
-            throw new IllegalArgumentException("El token no es valido o ya expiro");
+            throw new IllegalArgumentException("Error JWT: " + e.getMessage());
         }
     }
 
