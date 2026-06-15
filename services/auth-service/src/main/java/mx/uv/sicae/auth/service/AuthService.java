@@ -36,6 +36,15 @@ public class AuthService {
             throw new IllegalArgumentException("Usuario y contraseña son obligatorios.");
         }
 
+        // El username en la BD tiene un límite de 30 caracteres
+        if (request.getUsuario().length() > 30) {
+            throw new IllegalArgumentException("El usuario no puede exceder los 30 caracteres.");
+        }
+        // Validamos longitud de la contraseña
+        if (request.getContrasena().length() < 4 || request.getContrasena().length() > 50) {
+            throw new IllegalArgumentException("La longitud de la contraseña no es válida.");
+        }
+
         //Buscamos si el usuario existe
         Optional<UsuarioAuth> usuarioOpt = authRepository.buscarPorUsername(request.getUsuario());
 
