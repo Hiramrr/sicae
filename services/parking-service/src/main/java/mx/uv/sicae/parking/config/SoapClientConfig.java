@@ -1,5 +1,7 @@
 package mx.uv.sicae.parking.config;
 
+import mx.uv.sicae.parking.ws.ValidarUsuarioPorClaveRequest;
+import mx.uv.sicae.parking.ws.ValidarUsuarioPorClaveResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,10 @@ public class SoapClientConfig {
     @Bean
     public Jaxb2Marshaller userValidationMarshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("mx.uv.sicae.parking.ws");
+        marshaller.setClassesToBeBound(
+            ValidarUsuarioPorClaveRequest.class,
+            ValidarUsuarioPorClaveResponse.class
+        );
         return marshaller;
     }
 
