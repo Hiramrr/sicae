@@ -29,6 +29,9 @@ public class UserServiceClientImpl implements UserServiceClient {
             usuario.setIdUsuario(response.getIdUsuario());
             usuario.setClaveUsuario(response.getClaveUsuario());
             usuario.setActivo(response.isActivo());
+            usuario.setNombreCompleto(response.getNombreCompleto());
+            usuario.setRol(response.getRol());
+            usuario.setTipoUsuario(response.getTipoUsuario());
 
             return usuario;
 
