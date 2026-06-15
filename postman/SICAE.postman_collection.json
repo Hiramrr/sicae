@@ -1,8 +1,8 @@
 {
   "info": {
     "name": "SICAE - API base",
-    "description": "Coleccion inicial para pruebas manuales del proyecto SICAE. Ajustar rutas y payloads finales conforme avance el equipo.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "description": "# Documentación SICAE - Equipo 5\n\nEsta colección contiene los endpoints para realizar las pruebas manuales de los microservicios del proyecto SICAE.\n\n## Integrantes del Equipo:\n- Atanasio Barrientos Luis Alfredo\n- Baez Ramos Sarah Jocelyn\n- Gomez Maldonado Humberto Hiram\n- Hernández Holguín Rodrigo\n\n---\n\n## Arquitectura del Sistema\n\nSICAE opera bajo una arquitectura de microservicios distribuidos, separados por dominio funcional:\n- **AuthService:** Punto de entrada que autentica usuarios mediante credenciales válidas y emite tokens JWT.\n- **UserService:** Administra el registro, perfiles y estatus de los usuarios.\n- **VehicleService:** Gestiona el registro, edición y búsqueda de vehículos asociados a los usuarios.\n- **ParkingService:** Controla el registro de movimientos (entradas y salidas), cálculo automático de permanencia y disponibilidad de espacios.\n\nCada microservicio opera de manera independiente y administra exclusivamente su propia base de datos. Para que los microservicios se comuniquen de forma segura, el sistema exige que el cliente pase por el `AuthService` primero. El token JWT generado allí actúa como mecanismo de autenticación para el consumo de todos los demás servicios protegidos.",
+    "schema": "[https://schema.getpostman.com/json/collection/v2.1.0/collection.json](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)"
   },
   "auth": {
     "type": "bearer",
@@ -54,6 +54,24 @@
       "item": [
         {
           "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Esto lee el JSON que responde tu servicio",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Si el login fue exitoso, guarda el token en la variable global",
+                  "if(jsonData.success === true && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set(\"jwt_token\", jsonData.data.token);",
+                  "    console.log(\"Token guardado automáticamente: \" + jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "noauth"
@@ -67,10 +85,58 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"usuario\":\"admin\",\"contraseña\":\"admin123\"}"
+              "raw": "{\n    \"usuario\": \"prueba\",\n    \"contrasena\": \"prueba\"\n}"
             },
-            "url": "{{auth_base_url}}/auth/login"
-          }
+            "url": {
+              "raw": "{{auth_base_url}}/auth/login",
+              "host": [
+                "{{auth_base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Login Exitoso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"usuario\": \"prueba\",\n    \"contrasena\": \"prueba\"\n}"
+                },
+                "url": {
+                  "raw": "{{auth_base_url}}/auth/login",
+                  "host": [
+                    "{{auth_base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Login exitoso\",\n  \"data\": {\n    \"idUsuario\": 7,\n    \"idRol\": 1,\n    \"rol\": \"administrador\",\n    \"usuario\": \"prueba\",\n    \"nombreCompleto\": \"Usuario Prueba\",\n    \"idTipoUsuario\": 1,\n    \"tipoUsuario\": \"Docente\",\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJpZFJvbCI6MSwiaWRVc3VhcmlvIjo3LCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwic3ViIjoicHJ1ZWJhIiwiaWF0IjoxNzgxMzI0Nzg5LCJleHAiOjE3ODE0MTExODl9.M-8Fs28quz2FxCN2QByQqV6LMypX33KJoTWCtWwSIi4\"\n  },\n  \"error\": null\n}"
+            }
+          ]
         }
       ]
     },
