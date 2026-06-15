@@ -5,7 +5,7 @@ public class VehiculoRequest {
     private Integer idModelo;
     private String placa;
     private String color;
-    private Integer anio;
+    private String anio;
     private String descripcion;
 
     public Integer getIdUsuario() {
@@ -40,11 +40,11 @@ public class VehiculoRequest {
         this.color = color;
     }
 
-    public Integer getAnio() {
+    public String getAnio() {
         return anio;
     }
 
-    public void setAnio(Integer anio) {
+    public void setAnio(String anio) {
         this.anio = anio;
     }
 

@@ -65,7 +65,7 @@ public class VehiculoService {
         vehiculo.setIdModelo(request.getIdModelo());
         vehiculo.setPlaca(normalizarPlaca(request.getPlaca()));
         vehiculo.setColor(request.getColor().trim());
-        vehiculo.setAnio(request.getAnio());
+        vehiculo.setAnio(Integer.parseInt(request.getAnio().trim()));
         vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
 
         vehiculoRepository.registrar(vehiculo);
@@ -102,7 +102,7 @@ public class VehiculoService {
         vehiculo.setIdModelo(request.getIdModelo());
         vehiculo.setPlaca(normalizarPlaca(request.getPlaca()));
         vehiculo.setColor(request.getColor().trim());
-        vehiculo.setAnio(request.getAnio());
+        vehiculo.setAnio(Integer.parseInt(request.getAnio().trim()));
         vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
 
         vehiculoRepository.editar(vehiculo);
@@ -155,6 +155,9 @@ public class VehiculoService {
         if (request.getIdModelo() == null) {
             throw new IllegalArgumentException("idModelo es obligatorio");
         }
+        if (request.getIdModelo() <= 0) {
+            throw new IllegalArgumentException("idModelo debe ser mayor a 0");
+        }
         if (request.getPlaca() == null || request.getPlaca().trim().isEmpty()) {
             throw new IllegalArgumentException("placa es obligatoria");
         }
@@ -162,15 +165,16 @@ public class VehiculoService {
         if (request.getColor() == null || request.getColor().trim().isEmpty()) {
             throw new IllegalArgumentException("color es obligatorio");
         }
+        if (!request.getColor().trim().matches("^[A-Za-z ]+$")) {
+            throw new IllegalArgumentException("color solo debe contener letras y espacios");
+        }
         if (request.getColor().trim().length() > 20) {
             throw new IllegalArgumentException("color no debe exceder 20 caracteres");
         }
         if (request.getAnio() == null) {
             throw new IllegalArgumentException("anio es obligatorio");
         }
-        if (request.getAnio() < 1980 || request.getAnio() > 2026) {
-            throw new IllegalArgumentException("anio no es valido, debe estar entre 1980 y 2026");
-        }
+        validarAnio(request.getAnio());
         if (request.getDescripcion() == null || request.getDescripcion().trim().isEmpty()) {
             throw new IllegalArgumentException("descripcion es obligatoria");
         }
@@ -196,11 +200,17 @@ public class VehiculoService {
         if (idUsuario == null) {
             throw new IllegalArgumentException("idUsuario es obligatorio");
         }
+        if (idUsuario <= 0) {
+            throw new IllegalArgumentException("idUsuario debe ser mayor a 0");
+        }
     }
 
     private void validarIdVehiculo(Integer idVehiculo) {
         if (idVehiculo == null) {
             throw new IllegalArgumentException("idVehiculo es obligatorio");
+        }
+        if (idVehiculo <= 0) {
+            throw new IllegalArgumentException("idVehiculo debe ser mayor a 0");
         }
     }
 
@@ -216,6 +226,21 @@ public class VehiculoService {
 
         if (!placaNormalizada.matches("^[A-Z0-9]+$")) {
             throw new IllegalArgumentException("placa solo debe contener letras y numeros");
+        }
+    }
+
+    private void validarAnio(String anio) {
+        if (anio.trim().isEmpty()) {
+            throw new IllegalArgumentException("anio es obligatorio");
+        }
+
+        if (!anio.trim().matches("^[0-9]+$")) {
+            throw new IllegalArgumentException("anio debe ser un numero entero");
+        }
+
+        int anioNumero = Integer.parseInt(anio.trim());
+        if (anioNumero < 1980 || anioNumero > 2026) {
+            throw new IllegalArgumentException("anio no es valido, debe estar entre 1980 y 2026");
         }
     }
 
