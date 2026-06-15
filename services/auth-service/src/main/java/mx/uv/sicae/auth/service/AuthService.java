@@ -62,7 +62,7 @@ public class AuthService {
             throw new IllegalArgumentException("El usuario se encuentra inactivo.");
         }
 
-        // 4. Validar la contraseña cifrada comparando hashes
+        //Validar la contraseña cifrada comparando hashes
         if (!BCrypt.checkpw(request.getContrasena(), usuario.getPassword())) {
             throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
         }
