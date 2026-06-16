@@ -30,6 +30,7 @@ public class VehiculoController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    // Edpoint para buscar todos los vehiculos de un usuario, se necesita el idUsuario para saber de quien buscar y el token para validar permisos.
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<RespuestaApi<List<VehiculoResponse>>> buscarPorUsuario(
             @PathVariable Integer idUsuario,
@@ -53,6 +54,7 @@ public class VehiculoController {
         }
     }
 
+    // Esta ruta cubre el caso cuando el cliente olvida enviar el idUsuario en la consulta
     @GetMapping({"/usuario", "/usuario/"})
     public ResponseEntity<RespuestaApi<List<VehiculoResponse>>> buscarPorUsuarioSinId() {
         // si falta el id, respondo claro sin mandar la peticion al servicio
@@ -60,6 +62,7 @@ public class VehiculoController {
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idUsuario es obligatorio"));
     }
 
+    // Edpoint para buscar un vehicuo y saber si esta activo, ya que lo ocupa parking-service.
     @GetMapping("/placa/{placa}")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> buscarPorPlaca(
             @PathVariable String placa,
@@ -81,13 +84,15 @@ public class VehiculoController {
         }
     }
 
+    // Esta ruta cubre el caso cuando el cliente olvida enviar la placa en la consulta
     @GetMapping({"/placa", "/placa/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> buscarPorPlacaSinPlaca() {
         // esta ruta cubre el caso cuando el cliente olvida enviar la placa
         return ResponseEntity.badRequest()
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "placa es obligatoria"));
     }
-
+ 
+    // Edpoint para registrar un nuevo vehiculo
     @PostMapping("/registrar")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> registrar(
             @RequestBody(required = false) VehiculoRequest request,
@@ -111,6 +116,7 @@ public class VehiculoController {
         }
     }
 
+    // Edpoint para recordar que el idVehiculo es necesario en la ruta de editar.
     @PutMapping({"/editar", "/editar/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> editarSinId() {
         // Para editar siempre se necesita saber que vehiculo se va a mover.
@@ -118,6 +124,7 @@ public class VehiculoController {
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
 
+    // Edpoint para editar un vehiculo, solo se pueden cambiar los datos, no el usuario ni el estatus.
     @PutMapping("/editar/{idVehiculo}")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> editar(
             @PathVariable Integer idVehiculo,
@@ -142,6 +149,7 @@ public class VehiculoController {
         }
     }
 
+    // Edpoint para recordar que el idVehiculo es necesario en la ruta de cambiar estatus.
     @PatchMapping({"/estatus", "/estatus/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> cambiarEstatusSinId() {
         // cambiar estatus sin id no tiene sentido, por eso se corta aqui
@@ -149,6 +157,7 @@ public class VehiculoController {
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
 
+    // Edpoint para cambiar el estatus del vehiculo, se puede usar para activar o desactivar sin borrar el registro.
     @PatchMapping("/estatus/{idVehiculo}")
     public ResponseEntity<RespuestaApi<VehiculoResponse>> cambiarEstatus(
             @PathVariable Integer idVehiculo,

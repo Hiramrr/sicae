@@ -73,7 +73,7 @@ public class VehiculoService {
         vehiculo.setPlaca(normalizarPlaca(request.getPlaca()));
         vehiculo.setColor(request.getColor().trim());
         vehiculo.setAnio(Integer.parseInt(request.getAnio().trim()));
-        vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
+        vehiculo.setDescripcion(request.getDescripcion().trim());
 
         vehiculoRepository.registrar(vehiculo);
 
@@ -113,7 +113,7 @@ public class VehiculoService {
         vehiculo.setPlaca(normalizarPlaca(request.getPlaca()));
         vehiculo.setColor(request.getColor().trim());
         vehiculo.setAnio(Integer.parseInt(request.getAnio().trim()));
-        vehiculo.setDescripcion(normalizarOpcional(request.getDescripcion()));
+        vehiculo.setDescripcion(request.getDescripcion().trim());
 
         vehiculoRepository.editar(vehiculo);
 
@@ -295,14 +295,6 @@ public class VehiculoService {
     private String normalizarPlaca(String placa) {
         // dejo la placa en un formato parejo antes de comparar o guardar
         return placa.trim().toUpperCase();
-    }
-
-    private String normalizarOpcional(String valor) {
-        // si algun texto opcional viene vacio, lo guardo como null
-        if (valor == null || valor.trim().isEmpty()) {
-            return null;
-        }
-        return valor.trim();
     }
 
     private String generarClaveVehiculo(String placa) {
