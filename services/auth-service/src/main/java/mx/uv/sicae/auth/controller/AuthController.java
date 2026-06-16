@@ -27,20 +27,26 @@ public class AuthController {
         try {
             // Pasamos la petición al servicio 
             LoginResponse response = authService.login(request);
-            
+    
             // Si todo sale bien, devolvemos un HTTP 200 OK con nuestra respuesta estándar
             return ResponseEntity.ok(RespuestaApi.ok("Login exitoso", response));
             
         } catch (IllegalArgumentException e) {
-            // Si el servicio lanza un IllegalArgumentException por contraseña incorrecta o inactivo
-            // lo atrapamos y devolvemos un HTTP 401 Unauthorized
+            // Atrapa errores de validación de campos: Vacios o muy largos
+            //devolvemos un HTTP 400 Bad Request
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(RespuestaApi.fail("Error de validación", e.getMessage()));
+                    
+        } catch (SecurityException e) {
+            //Si es un error de credenciales: No existe en la bd, no coinciden los hashes o sino esta activo
+            //Devolvemos un HTTP 401 UNAUTHORIZED
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(RespuestaApi.fail("No se pudo completar la operación", e.getMessage()));
-                    
-        } catch (Exception e) {
-            // Si es un error no contemplado devolvemos un HTTP 500
+        }catch (Exception e) {
+            // Otro cualquier erro devolvera -> HTTP 500
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RespuestaApi.fail("Error interno del servidor", e.getMessage()));
         }
+
     }
 }

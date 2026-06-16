@@ -16,6 +16,10 @@ import java.util.Optional;
     3. Comprobar bcrypto
     4. Generar la respuesta
 
+
+
+    IllegalArgumentException -> errores de formato (400 Bad Request)
+    SecurityException -> errores de credenciales y acceso (401 Unauthorized).
 */
 
 @Service
@@ -49,8 +53,8 @@ public class AuthService {
         Optional<UsuarioAuth> usuarioOpt = authRepository.buscarPorUsername(request.getUsuario());
 
         if (usuarioOpt.isEmpty()) {
-            //Un mensaje generico para no dar detalles a posibles ataques
-            throw new IllegalArgumentException("Usuario o contraseña incorrectos."); 
+            //sino existe
+            throw new SecurityException("Usuario o contraseña incorrectos."); 
         }
 
         UsuarioAuth usuario = usuarioOpt.get();
@@ -59,12 +63,12 @@ public class AuthService {
         // La bd nos puede arrojar 1, true o t
         if (usuario.getEstatus() == null || usuario.getEstatus().equals("0") || 
             usuario.getEstatus().equalsIgnoreCase("false") || usuario.getEstatus().equalsIgnoreCase("f")) {
-            throw new IllegalArgumentException("El usuario se encuentra inactivo.");
+            throw new SecurityException("El usuario se encuentra inactivo.");
         }
 
         //Validar la contraseña cifrada comparando hashes
         if (!BCrypt.checkpw(request.getContrasena(), usuario.getPassword())) {
-            throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
+            throw new SecurityException("Usuario o contraseña incorrectos.");
         }
 
         //generamos el Token JWT
