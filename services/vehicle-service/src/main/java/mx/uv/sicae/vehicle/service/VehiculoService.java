@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VehiculoService {
+    // Regla del proyecto: un usuario no debe tener mas de cuatro vehiculos activos
     private static final int MAXIMO_VEHICULOS_ACTIVOS = 4;
 
     private final VehiculoRepository vehiculoRepository;
@@ -22,12 +23,14 @@ public class VehiculoService {
     }
 
     public List<VehiculoResponse> buscarPorUsuario(Integer idUsuario, Integer idUsuarioAutenticado) {
+        // antes de consultar, confirmo que el usuario pedido sea el mismo del token
         validarIdUsuario(idUsuario);
         validarUsuarioAutenticado(idUsuario, idUsuarioAutenticado);
 
         List<VehiculoEntity> vehiculos = vehiculoRepository.buscarPorUsuario(idUsuario);
         List<VehiculoResponse> respuesta = new ArrayList<>();
 
+        // convierto cada entidad a respuesta para no exponer detalles internos
         for (VehiculoEntity vehiculo : vehiculos) {
             respuesta.add(VehiculoResponse.fromEntity(vehiculo));
         }
@@ -36,6 +39,7 @@ public class VehiculoService {
     }
 
     public VehiculoResponse buscarPorPlaca(String placa, Integer idUsuarioAutenticado) {
+        // la placa se normaliza para que no afecten minusculas o espacios
         validarPlaca(placa);
 
         Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(normalizarPlaca(placa));
@@ -44,11 +48,13 @@ public class VehiculoService {
         }
 
         VehiculoEntity vehiculo = resultado.get();
+        // aunque exista la placa, solo su duenio puede ver ese vehiculo
         validarUsuarioAutenticado(vehiculo.getIdUsuario(), idUsuarioAutenticado);
         return VehiculoResponse.fromEntity(vehiculo);
     }
 
     public VehiculoResponse registrar(VehiculoRequest request, Integer idUsuarioAutenticado) {
+        // Aqui se juntan todas las reglas antes de insertar en la base
         validarDatosVehiculo(request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
         validarModeloExiste(request.getIdModelo());
@@ -59,6 +65,7 @@ public class VehiculoService {
             throw new IllegalArgumentException("El usuario ya tiene 4 vehiculos activos");
         }
 
+        // se arma la entidad ya con los datos limpios para guardar
         VehiculoEntity vehiculo = new VehiculoEntity();
         vehiculo.setIdUsuario(request.getIdUsuario());
         vehiculo.setClaveVehiculo(generarClaveVehiculo(request.getPlaca()));
@@ -70,6 +77,7 @@ public class VehiculoService {
 
         vehiculoRepository.registrar(vehiculo);
 
+        // recupero el registro completo para devolver marca, modelo y demas datos de la vista
         Optional<VehiculoEntity> vehiculoRegistrado = vehiculoRepository.buscarPorId(vehiculo.getIdVehiculo());
         if (vehiculoRegistrado.isPresent()) {
             return VehiculoResponse.fromEntity(vehiculoRegistrado.get());
@@ -79,6 +87,7 @@ public class VehiculoService {
     }
 
     public VehiculoResponse editar(Integer idVehiculo, VehiculoRequest request, Integer idUsuarioAutenticado) {
+        // para editar se valida tanto el id de la ruta como los datos del cuerpo
         validarIdVehiculo(idVehiculo);
         validarDatosVehiculo(request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
@@ -90,6 +99,7 @@ public class VehiculoService {
         }
         VehiculoEntity vehiculoActual = resultado.get();
 
+        // evito que un usuario modifique un vehiculo que no le pertenece
         if (!vehiculoActual.getIdUsuario().equals(request.getIdUsuario())) {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
         }
@@ -107,6 +117,7 @@ public class VehiculoService {
 
         vehiculoRepository.editar(vehiculo);
 
+        // regreso la informacion actualizada tal como queda en la base
         Optional<VehiculoEntity> vehiculoActualizado = vehiculoRepository.buscarPorId(idVehiculo);
         if (vehiculoActualizado.isPresent()) {
             return VehiculoResponse.fromEntity(vehiculoActualizado.get());
@@ -116,6 +127,7 @@ public class VehiculoService {
     }
 
     public VehiculoResponse cambiarEstatus(Integer idVehiculo, EstatusVehiculoRequest request, Integer idUsuarioAutenticado) {
+        // cambiar estatus tambien pasa por token para que no se active algo ajeno
         validarDatosEstatus(idVehiculo, request);
         validarUsuarioAutenticado(request.getIdUsuario(), idUsuarioAutenticado);
 
@@ -129,6 +141,7 @@ public class VehiculoService {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
         }
 
+        // si se quiere reactivar, vuelvo a revisar el limite de vehiculos activos
         if (Boolean.TRUE.equals(request.getActivo()) && !Boolean.TRUE.equals(vehiculoActual.getEstatus())) {
             int vehiculosActivos = vehiculoRepository.contarActivosPorUsuario(request.getIdUsuario());
             if (vehiculosActivos >= MAXIMO_VEHICULOS_ACTIVOS) {
@@ -147,6 +160,7 @@ public class VehiculoService {
     }
 
     private void validarDatosVehiculo(VehiculoRequest request) {
+        // reviso los campos obligatorios y el formato esperado por la regla del proyecto
         if (request == null) {
             throw new IllegalArgumentException("Los datos del vehiculo son obligatorios");
         }
@@ -184,6 +198,7 @@ public class VehiculoService {
     }
 
     private void validarDatosEstatus(Integer idVehiculo, EstatusVehiculoRequest request) {
+        // para estatus solo se necesita id del vehiculo, usuario y el valor activo
         validarIdVehiculo(idVehiculo);
 
         if (request == null) {
@@ -197,6 +212,7 @@ public class VehiculoService {
     }
 
     private void validarIdUsuario(Integer idUsuario) {
+        // los identificadores deben venir informados y ser positivos
         if (idUsuario == null) {
             throw new IllegalArgumentException("idUsuario es obligatorio");
         }
@@ -206,6 +222,7 @@ public class VehiculoService {
     }
 
     private void validarIdVehiculo(Integer idVehiculo) {
+        // misma validacion base, pero aplicada al vehiculo
         if (idVehiculo == null) {
             throw new IllegalArgumentException("idVehiculo es obligatorio");
         }
@@ -215,6 +232,7 @@ public class VehiculoService {
     }
 
     private void validarPlaca(String placa) {
+        // placa vacia o con simbolos raros se rechaza desde aqui
         if (placa == null || placa.trim().isEmpty()) {
             throw new IllegalArgumentException("placa es obligatoria");
         }
@@ -230,6 +248,7 @@ public class VehiculoService {
     }
 
     private void validarAnio(String anio) {
+        // el anio llega como texto, por eso primero confirmo que sea numerico
         if (anio.trim().isEmpty()) {
             throw new IllegalArgumentException("anio es obligatorio");
         }
@@ -245,6 +264,7 @@ public class VehiculoService {
     }
 
     private void validarUsuarioAutenticado(Integer idUsuario, Integer idUsuarioAutenticado) {
+        // esta comparacion amarra la peticion con el usuario que trae el token
         if (idUsuarioAutenticado == null) {
             throw new IllegalArgumentException("Debe enviar el token de autenticacion");
         }
@@ -254,12 +274,14 @@ public class VehiculoService {
     }
 
     private void validarModeloExiste(Integer idModelo) {
+        // no dejo guardar vehiculos con modelos dados de baja o inexistentes
         if (vehiculoRepository.contarModeloActivoPorId(idModelo) == 0) {
             throw new IllegalArgumentException("El modelo indicado no existe o no esta activo");
         }
     }
 
     private void validarPlacaDisponible(String placa, Integer idVehiculoActual) {
+        // al editar permito la misma placa solo si pertenece al mismo vehiculo
         String placaNormalizada = normalizarPlaca(placa);
         Optional<VehiculoEntity> resultado = vehiculoRepository.buscarPorPlaca(placaNormalizada);
         if (resultado.isPresent()) {
@@ -271,10 +293,12 @@ public class VehiculoService {
     }
 
     private String normalizarPlaca(String placa) {
+        // dejo la placa en un formato parejo antes de comparar o guardar
         return placa.trim().toUpperCase();
     }
 
     private String normalizarOpcional(String valor) {
+        // si algun texto opcional viene vacio, lo guardo como null
         if (valor == null || valor.trim().isEmpty()) {
             return null;
         }
@@ -282,6 +306,7 @@ public class VehiculoService {
     }
 
     private String generarClaveVehiculo(String placa) {
+        // la clave sale de la placa para que sea facil relacionarla
         String normalizada = normalizarPlaca(placa).replaceAll("[^A-Z0-9]", "");
         if (normalizada.length() > 7) {
             normalizada = normalizada.substring(0, 7);

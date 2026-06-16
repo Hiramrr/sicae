@@ -1,6 +1,7 @@
 package mx.uv.sicae.vehicle.dto;
 
 public class VehiculoRequest {
+    // representa lo que el cliente manda para registrar o editar un vehiculo
     private Integer idUsuario;
     private Integer idModelo;
     private String placa;

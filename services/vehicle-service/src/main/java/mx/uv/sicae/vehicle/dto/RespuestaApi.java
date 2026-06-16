@@ -1,6 +1,7 @@
 package mx.uv.sicae.vehicle.dto;
 
 public class RespuestaApi<T> {
+    // Formato comun para que todas las respuestas salgan parecidas
     private boolean success;
     private String message;
     private T data;
@@ -17,10 +18,12 @@ public class RespuestaApi<T> {
     }
 
     public static <T> RespuestaApi<T> ok(String message, T data) {
+        // respuesta usada cuando la operacion salio bien
         return new RespuestaApi<>(true, message, data, null);
     }
 
     public static <T> RespuestaApi<T> fail(String message, String error) {
+        // respuesta usada cuando hay algun detalle que avisar al cliente.
         return new RespuestaApi<>(false, message, null, error);
     }
 

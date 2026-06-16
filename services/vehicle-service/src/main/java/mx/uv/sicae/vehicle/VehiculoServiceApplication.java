@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class VehiculoServiceApplication {
 
     public static void main(String[] args) {
+        // Punto de arranque del microservicio de vehiculos
         SpringApplication.run(VehiculoServiceApplication.class, args);
     }
 }

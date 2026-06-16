@@ -3,6 +3,7 @@ package mx.uv.sicae.vehicle.dto;
 import mx.uv.sicae.vehicle.model.VehiculoEntity;
 
 public class VehiculoResponse {
+    // Estos campos son los que se regresan ya listos para la app cliente
     private Integer idUsuario;
     private Integer idVehiculo;
     private Integer idModelo;
@@ -16,6 +17,7 @@ public class VehiculoResponse {
     private Boolean estatus;
 
     public static VehiculoResponse fromEntity(VehiculoEntity entity) {
+        // paso la entidad de base de datos a un objeto mas limpio para responder
         VehiculoResponse response = new VehiculoResponse();
         response.setIdUsuario(entity.getIdUsuario());
         response.setIdVehiculo(entity.getIdVehiculo());

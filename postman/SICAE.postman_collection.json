@@ -508,7 +508,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculos consultados correctamente\",\n  \"data\": [\n    {\n      \"idUsuario\": 1,\n      \"idVehiculo\": 1,\n      \"idModelo\": 1,\n      \"modelo\": \"Versa\",\n      \"idMarca\": 1,\n      \"marca\": \"Nissan\",\n      \"placa\": \"ABC123\",\n      \"color\": \"Blanco\",\n      \"anio\": 2020,\n      \"descripcion\": \"Vehiculo de prueba\",\n      \"estatus\": true\n    }\n  ],\n  \"error\": null\n}"
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculos consultados correctamente\",\n  \"data\": [\n    {\n      \"idUsuario\": 1,\n      \"idVehiculo\": 1,\n      \"idModelo\": 1,\n      \"modelo\": \"Corolla\",\n      \"idMarca\": 1,\n      \"marca\": \"Toyota\",\n      \"placa\": \"ABC123\",\n      \"color\": \"Blanco\",\n      \"anio\": 2020,\n      \"descripcion\": \"Vehiculo de prueba\",\n      \"estatus\": true\n    }\n  ],\n  \"error\": null\n}"
             }
           ]
         },
@@ -585,7 +585,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo registrado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Blanco\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo de prueba\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo registrado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Corolla\",\n    \"idMarca\": 1,\n    \"marca\": \"Toyota\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Blanco\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo de prueba\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
             }
           ]
         },
@@ -664,7 +664,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
+              "body": "{\n  \"success\": true,\n  \"message\": \"Vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Corolla\",\n    \"idMarca\": 1,\n    \"marca\": \"Toyota\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": true\n  },\n  \"error\": null\n}"
             }
           ]
         },
@@ -743,7 +743,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Estatus del vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Versa\",\n    \"idMarca\": 1,\n    \"marca\": \"Nissan\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": false\n  },\n  \"error\": null\n}"
+              "body": "{\n  \"success\": true,\n  \"message\": \"Estatus del vehiculo actualizado correctamente\",\n  \"data\": {\n    \"idUsuario\": 1,\n    \"idVehiculo\": 1,\n    \"idModelo\": 1,\n    \"modelo\": \"Corolla\",\n    \"idMarca\": 1,\n    \"marca\": \"Toyota\",\n    \"placa\": \"ABC123\",\n    \"color\": \"Gris\",\n    \"anio\": 2020,\n    \"descripcion\": \"Vehiculo actualizado\",\n    \"estatus\": false\n  },\n  \"error\": null\n}"
             }
           ]
         }

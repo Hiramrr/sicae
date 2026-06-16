@@ -1,6 +1,7 @@
 package mx.uv.sicae.vehicle.dto;
 
 public class EstatusVehiculoRequest {
+    // Datos minimos que se ocupan para activar o desactivar un vehiculo
     private Integer idUsuario;
     private Boolean activo;
 

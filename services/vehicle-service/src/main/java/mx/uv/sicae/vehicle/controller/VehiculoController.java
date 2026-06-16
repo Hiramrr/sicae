@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/vehiculos")
 public class VehiculoController {
+    // El controlador solo recibe las peticiones y deja la logica fuerte al servicio
     @Autowired
     private VehiculoService vehiculoService;
     @Autowired
@@ -34,6 +35,7 @@ public class VehiculoController {
             @PathVariable Integer idUsuario,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            // se valida el token antes de dejar consultar los vehiculos del usuario
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             List<VehiculoResponse> vehiculos = vehiculoService.buscarPorUsuario(idUsuario, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculos consultados correctamente", vehiculos));
@@ -53,6 +55,7 @@ public class VehiculoController {
 
     @GetMapping({"/usuario", "/usuario/"})
     public ResponseEntity<RespuestaApi<List<VehiculoResponse>>> buscarPorUsuarioSinId() {
+        // si falta el id, respondo claro sin mandar la peticion al servicio
         return ResponseEntity.badRequest()
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idUsuario es obligatorio"));
     }
@@ -62,6 +65,7 @@ public class VehiculoController {
             @PathVariable String placa,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            // la placa se busca solo si el token confirma quien esta consultando
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.buscarPorPlaca(placa, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo consultado correctamente", vehiculo));
@@ -79,6 +83,7 @@ public class VehiculoController {
 
     @GetMapping({"/placa", "/placa/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> buscarPorPlacaSinPlaca() {
+        // esta ruta cubre el caso cuando el cliente olvida enviar la placa
         return ResponseEntity.badRequest()
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "placa es obligatoria"));
     }
@@ -88,6 +93,7 @@ public class VehiculoController {
             @RequestBody(required = false) VehiculoRequest request,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            // al registrar, el usuario del token debe coincidir con el del cuerpo
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.registrar(request, idUsuarioAutenticado);
             return ResponseEntity.status(201).body(RespuestaApi.ok("Vehiculo registrado correctamente", vehiculo));
@@ -107,6 +113,7 @@ public class VehiculoController {
 
     @PutMapping({"/editar", "/editar/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> editarSinId() {
+        // Para editar siempre se necesita saber que vehiculo se va a mover.
         return ResponseEntity.badRequest()
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
@@ -117,6 +124,7 @@ public class VehiculoController {
             @RequestBody(required = false) VehiculoRequest request,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            // el servicio valida los datos nuevos y tambien que el vehiculo sea del usuario
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.editar(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Vehiculo actualizado correctamente", vehiculo));
@@ -136,6 +144,7 @@ public class VehiculoController {
 
     @PatchMapping({"/estatus", "/estatus/"})
     public ResponseEntity<RespuestaApi<VehiculoResponse>> cambiarEstatusSinId() {
+        // cambiar estatus sin id no tiene sentido, por eso se corta aqui
         return ResponseEntity.badRequest()
                 .body(RespuestaApi.fail("Datos de entrada invalidos", "idVehiculo es obligatorio"));
     }
@@ -146,6 +155,7 @@ public class VehiculoController {
             @RequestBody(required = false) EstatusVehiculoRequest request,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            // este endpoint sirve para activar o desactivar el vehiculo
             Integer idUsuarioAutenticado = jwtUtil.obtenerIdUsuario(authorizationHeader);
             VehiculoResponse vehiculo = vehiculoService.cambiarEstatus(idVehiculo, request, idUsuarioAutenticado);
             return ResponseEntity.ok(RespuestaApi.ok("Estatus del vehiculo actualizado correctamente", vehiculo));

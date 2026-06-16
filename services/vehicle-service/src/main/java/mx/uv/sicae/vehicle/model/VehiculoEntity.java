@@ -3,6 +3,7 @@ package mx.uv.sicae.vehicle.model;
 import java.time.LocalDateTime;
 
 public class VehiculoEntity {
+    // esta clase refleja los datos del vehiculo como vienen de la base
     private Integer idVehiculo;
     private Integer idUsuario;
     private String claveVehiculo;
