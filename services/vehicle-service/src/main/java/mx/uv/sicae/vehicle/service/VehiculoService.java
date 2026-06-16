@@ -30,7 +30,7 @@ public class VehiculoService {
         List<VehiculoEntity> vehiculos = vehiculoRepository.buscarPorUsuario(idUsuario);
         List<VehiculoResponse> respuesta = new ArrayList<>();
 
-        // convierto cada entidad a respuesta para no exponer detalles internos
+        // se convierte cada entidad a respuesta para no exponer detalles internos
         for (VehiculoEntity vehiculo : vehiculos) {
             respuesta.add(VehiculoResponse.fromEntity(vehiculo));
         }
@@ -48,7 +48,7 @@ public class VehiculoService {
         }
 
         VehiculoEntity vehiculo = resultado.get();
-        // aunque exista la placa, solo su duenio puede ver ese vehiculo
+        // aunque exista la placa, solo su dueño puede ver ese vehiculo
         validarUsuarioAutenticado(vehiculo.getIdUsuario(), idUsuarioAutenticado);
         return VehiculoResponse.fromEntity(vehiculo);
     }
@@ -77,7 +77,7 @@ public class VehiculoService {
 
         vehiculoRepository.registrar(vehiculo);
 
-        // recupero el registro completo para devolver marca, modelo y demas datos de la vista
+        // se recupera el registro completo para devolver marca, modelo y demas datos de la vista
         Optional<VehiculoEntity> vehiculoRegistrado = vehiculoRepository.buscarPorId(vehiculo.getIdVehiculo());
         if (vehiculoRegistrado.isPresent()) {
             return VehiculoResponse.fromEntity(vehiculoRegistrado.get());
@@ -99,7 +99,7 @@ public class VehiculoService {
         }
         VehiculoEntity vehiculoActual = resultado.get();
 
-        // evito que un usuario modifique un vehiculo que no le pertenece
+        // se evita que un usuario modifique un vehiculo que no le pertenece
         if (!vehiculoActual.getIdUsuario().equals(request.getIdUsuario())) {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
         }
@@ -141,7 +141,7 @@ public class VehiculoService {
             throw new IllegalArgumentException("El vehiculo no pertenece al usuario autenticado");
         }
 
-        // si se quiere reactivar, vuelvo a revisar el limite de vehiculos activos
+        // si se quiere reactivar, se revisa el limite de vehiculos activos
         if (Boolean.TRUE.equals(request.getActivo()) && !Boolean.TRUE.equals(vehiculoActual.getEstatus())) {
             int vehiculosActivos = vehiculoRepository.contarActivosPorUsuario(request.getIdUsuario());
             if (vehiculosActivos >= MAXIMO_VEHICULOS_ACTIVOS) {
@@ -207,7 +207,7 @@ public class VehiculoService {
         validarIdUsuario(request.getIdUsuario());
 
         if (request.getActivo() == null) {
-            throw new IllegalArgumentException("activo es obligatorio");
+            throw new IllegalArgumentException("activo (true) o inactivo (false) es obligatorio");
         }
     }
 
