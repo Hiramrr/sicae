@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface CatalogoRepository {
 
+    // Verifica si el rol existe y esta activo.
     @Select("""
             SELECT COUNT(*)
             FROM rol
@@ -15,6 +16,7 @@ public interface CatalogoRepository {
             """)
     int contarRolActivoPorId(@Param("idRol") Integer idRol);
 
+    // Verifica si el tipo de usuario existe y esta activo.
     @Select("""
             SELECT COUNT(*)
             FROM "tipoUsuario"
@@ -23,6 +25,7 @@ public interface CatalogoRepository {
             """)
     int contarTipoUsuarioActivoPorId(@Param("idTipoUsuario") Integer idTipoUsuario);
 
+    // Verifica si el programa educativo existe y esta activo.
     @Select("""
             SELECT COUNT(*)
             FROM "programaEducativo"

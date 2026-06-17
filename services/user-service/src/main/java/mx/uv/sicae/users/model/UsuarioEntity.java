@@ -2,6 +2,7 @@ package mx.uv.sicae.users.model;
 
 import java.time.LocalDateTime;
 
+// Representacion del usuario
 public class UsuarioEntity {
     private Integer idUsuario;
     private String nombre;

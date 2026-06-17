@@ -2,6 +2,8 @@ package mx.uv.sicae.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+// Dato que envia el cliente para editar un usuario.
+// username, password y claveUsuario no se pueden modificar.
 public class EditarUsuarioRequest {
     private Integer idRol;
     private Integer idTipoUsuario;

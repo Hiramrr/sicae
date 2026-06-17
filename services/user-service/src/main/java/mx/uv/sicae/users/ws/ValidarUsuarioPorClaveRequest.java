@@ -7,6 +7,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "validarUsuarioPorClaveRequest", namespace = "http://sicae.uv.mx/users/validation")
 @XmlAccessorType(XmlAccessType.FIELD)
+// Lo que el cliente SOAP envia para preguntar por un usuario.
 public class ValidarUsuarioPorClaveRequest {
 
     @XmlElement(name = "claveUsuario", namespace = "http://sicae.uv.mx/users/validation", required = true)

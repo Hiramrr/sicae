@@ -17,6 +17,7 @@ public class UsuarioResponse {
     private LocalDateTime tiempoCreacion;
     private LocalDateTime tempoActualizacion;
 
+    // Convierte un UsuarioPerfil (de la BD) en UsuarioResponse (para la API).
     public static UsuarioResponse fromEntity(UsuarioPerfil perfil) {
         UsuarioResponse response = new UsuarioResponse();
         response.setIdUsuario(perfil.getIdUsuario());

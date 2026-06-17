@@ -2,6 +2,7 @@ package mx.uv.sicae.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+// Dato que envia el cliente para activar/desactivar un usuario.
 public class CambiarEstatusRequest {
     private Integer idUsuario;
     private Integer idRol;

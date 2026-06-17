@@ -15,10 +15,12 @@ public class RespuestaApi<T> {
         this.error = error;
     }
 
+    // Respuesta exitosa: success=true, message y data.
     public static <T> RespuestaApi<T> ok(String message, T data) {
         return new RespuestaApi<>(true, message, data, null);
     }
 
+    // Respuesta de error: success=false, message y error.
     public static <T> RespuestaApi<T> fail(String message, String error) {
         return new RespuestaApi<>(false, message, null, error);
     }

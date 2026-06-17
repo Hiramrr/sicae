@@ -15,6 +15,7 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 public class WebServiceConfig {
 
+    // Registra el servlet para que escuche en /ws/*
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext context) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
@@ -23,6 +24,7 @@ public class WebServiceConfig {
         return new ServletRegistrationBean<>(servlet, "/ws/*");
     }
 
+    // Expone el WSDL del servicio SOAP de validacion de usuarios.
     @Bean(name = "userValidation")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema userValidationSchema) {
         DefaultWsdl11Definition definition = new DefaultWsdl11Definition();
@@ -33,6 +35,7 @@ public class WebServiceConfig {
         return definition;
     }
 
+    // Carga el esquema XSD que define las peticiones/respuestas SOAP.
     @Bean
     public XsdSchema userValidationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/userValidation.xsd"));

@@ -9,8 +9,6 @@ import mx.uv.sicae.users.dto.RegistrarUsuarioRequest;
 import mx.uv.sicae.users.dto.RespuestaApi;
 import mx.uv.sicae.users.dto.UsuarioResponse;
 import mx.uv.sicae.users.service.UsuarioService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UsuarioController {
 
-    private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
-
     private final UsuarioService usuarioService;
     private final JwtUtil jwtUtil;
 
@@ -37,6 +33,7 @@ public class UsuarioController {
         this.jwtUtil = jwtUtil;
     }
 
+    // Registra un usuario nuevo. Solo el admin puede hacerlo.
     @PostMapping
     public ResponseEntity<RespuestaApi<UsuarioResponse>> registrar(
             @RequestBody RegistrarUsuarioRequest request,
@@ -44,21 +41,21 @@ public class UsuarioController {
         String token = extraerToken(authorizationHeader);
         Integer idRolAutenticado = jwtUtil.extraerIdRol(token);
         UsuarioResponse usuario = usuarioService.crearUsuario(request, idRolAutenticado);
-        log.info("Usuario registrado: idUsuario={}, username={}", usuario.getIdUsuario(), usuario.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(RespuestaApi.ok("Usuario registrado correctamente", usuario));
     }
 
+    // Devuelve todos los usuarios. Solo el admin puede verlos.
     @GetMapping
     public ResponseEntity<RespuestaApi<List<UsuarioResponse>>> listar(
             @RequestHeader("Authorization") String authorizationHeader) {
         String token = extraerToken(authorizationHeader);
         Integer idRolAutenticado = jwtUtil.extraerIdRol(token);
         List<UsuarioResponse> usuarios = usuarioService.listarUsuarios(idRolAutenticado);
-        log.debug("Usuarios consultados: {} registros", usuarios.size());
         return ResponseEntity.ok(RespuestaApi.ok("Usuarios consultados correctamente", usuarios));
     }
 
+    // Edita los datos de un usuario. Puede hacerlo el admin o el propio usuario.
     @PutMapping("/{idUsuario}")
     public ResponseEntity<RespuestaApi<UsuarioResponse>> editar(
             @PathVariable Integer idUsuario,
@@ -68,20 +65,20 @@ public class UsuarioController {
         Integer idUsuarioAutenticado = jwtUtil.extraerIdUsuario(token);
         Integer idRolAutenticado = jwtUtil.extraerIdRol(token);
         UsuarioResponse usuario = usuarioService.editarUsuario(idUsuario, request, idUsuarioAutenticado, idRolAutenticado);
-        log.info("Usuario editado: idUsuario={}", idUsuario);
         return ResponseEntity.ok(RespuestaApi.ok("Usuario actualizado correctamente", usuario));
     }
 
+    // Obtiene el perfil de un usuario por su id. Cualquier usuario autenticado.
     @GetMapping("/{idUsuario}")
     public ResponseEntity<RespuestaApi<UsuarioResponse>> obtenerPerfil(
             @PathVariable Integer idUsuario,
             @RequestHeader("Authorization") String authorizationHeader) {
         extraerToken(authorizationHeader);
         UsuarioResponse usuario = usuarioService.obtenerPerfil(idUsuario);
-        log.debug("Perfil consultado: idUsuario={}", idUsuario);
         return ResponseEntity.ok(RespuestaApi.ok("Perfil consultado correctamente", usuario));
     }
 
+    // Activa o desactiva un usuario. Solo el admin, y no puede desactivarse a si mismo.
     @PatchMapping("/{idUsuario}/status")
     public ResponseEntity<RespuestaApi<UsuarioResponse>> cambiarEstatus(
             @PathVariable Integer idUsuario,
@@ -95,10 +92,11 @@ public class UsuarioController {
                 request,
                 idUsuarioAutenticado,
                 idRolToken);
-        log.info("Estatus cambiado: idUsuario={}, estatus={}", idUsuario, usuario.getEstatus());
         return ResponseEntity.ok(RespuestaApi.ok("Estatus del usuario actualizado correctamente", usuario));
     }
 
+    // Saca el token del header "Authorization: Bearer <token>" y lo valida.
+    // Si algo falla lanza JwtException.
     private String extraerToken(String authorizationHeader) {
         if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
             throw new io.jsonwebtoken.JwtException("Authorization Bearer token es obligatorio");

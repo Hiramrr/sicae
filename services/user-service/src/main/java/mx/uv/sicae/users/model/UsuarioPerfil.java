@@ -2,6 +2,7 @@ package mx.uv.sicae.users.model;
 
 import java.time.LocalDateTime;
 
+// Version de solo lectura del usuario
 public class UsuarioPerfil {
     private Integer idUsuario;
     private String rol;

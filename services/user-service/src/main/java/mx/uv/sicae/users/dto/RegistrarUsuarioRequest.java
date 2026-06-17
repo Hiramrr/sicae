@@ -2,6 +2,7 @@ package mx.uv.sicae.users.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+// datos para registrar un usuario nuevo.
 public class RegistrarUsuarioRequest {
     private Integer idRol;
     private Integer idTipoUsuario;
