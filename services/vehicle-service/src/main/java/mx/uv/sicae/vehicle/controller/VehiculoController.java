@@ -11,6 +11,8 @@ import mx.uv.sicae.vehicle.service.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -180,5 +182,12 @@ public class VehiculoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RespuestaApi.fail("Error interno al cambiar el estatus del vehiculo", "Intente nuevamente mas tarde"));
         }
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<RespuestaApi<Object>> manejarJsonInvalido(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest()
+                .body(RespuestaApi.fail("Datos de entrada invalidos",
+                        "Los campos idUsuario e idModelo deben ser numeros enteros"));
     }
 }
