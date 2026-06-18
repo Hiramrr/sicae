@@ -153,11 +153,24 @@ CREATE TABLE `movimiento`  (
   PRIMARY KEY (`idMovimiento`) USING BTREE,
   INDEX `idEspacio`(`idEspacio` ASC) USING BTREE,
   CONSTRAINT `movimiento_ibfk_1` FOREIGN KEY (`idEspacio`) REFERENCES `espacioestacionamiento` (`idEspacio`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of movimiento
 -- ----------------------------
+INSERT INTO `movimiento` (`idVehiculo`,`tiempoEntrada`,`tiempoSalida`,`minutosEstacionado`,`horasCobradas`,`costoTotal`,`tarifaHora`,`idEspacio`) VALUES
+(1,'2026-06-17 08:30:00','2026-06-17 14:30:00',360,6,60.00,10.00,1),
+(2,'2026-06-17 09:00:00','2026-06-17 17:00:00',480,8,80.00,10.00,2),
+(3,'2026-06-17 10:15:00','2026-06-17 12:45:00',150,3,30.00,10.00,3),
+(4,'2026-06-17 07:00:00','2026-06-17 15:00:00',480,8,80.00,10.00,4),
+(5,'2026-06-17 08:45:00','2026-06-17 14:15:00',330,6,60.00,10.00,5),
+(6,'2026-06-18 09:30:00','2026-06-18 16:30:00',420,7,70.00,10.00,6),
+(7,'2026-06-18 10:00:00','2026-06-18 13:00:00',180,3,30.00,10.00,7),
+(8,'2026-06-18 07:30:00','2026-06-18 14:00:00',390,7,70.00,10.00,8),
+(9,'2026-06-18 11:00:00','2026-06-18 15:30:00',270,5,50.00,10.00,9),
+(10,'2026-06-18 08:00:00','2026-06-18 12:00:00',240,4,40.00,10.00,10);
+
+UPDATE `espacioestacionamiento` SET `ocupado` = b'1' WHERE `idEspacio` IN (1,2,3,4,5,6,7,8,9,10);
 
 -- ----------------------------
 -- View structure for movimientofullinfo

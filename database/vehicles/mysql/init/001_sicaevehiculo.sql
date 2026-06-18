@@ -124,11 +124,32 @@ CREATE TABLE `vehiculo`  (
   UNIQUE KEY `uk_vehiculo_placa` (`placa`) USING BTREE,
   INDEX `idModelo`(`idModelo` ASC) USING BTREE,
   CONSTRAINT `vehiculo_ibfk_1` FOREIGN KEY (`idModelo`) REFERENCES `modelo` (`idModelo`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vehiculo
 -- ----------------------------
+INSERT INTO `vehiculo` (`idUsuario`,`claveVehiculo`,`idModelo`,`placa`,`color`,`anio`,`descripcion`,`estatus`) VALUES
+(2,'V-XYZ1234',1,'XYZ1234','Rojo',2024,'Sedán confiable para la escuela',b'1'),
+(3,'V-LMN5678',8,'LMN5678','Blanco',2023,'Auto económico',b'1'),
+(4,'V-PQR9012',16,'PQR9012','Negro',2024,'Auto ejecutivo',b'1'),
+(5,'V-BCD3456',19,'BCD3456','Gris',2023,'Hatchback divertido',b'1'),
+(5,'V-EFG7890',37,'EFG7890','Rojo',2024,'Moto R15',b'1'),
+(6,'V-HIJ1234',11,'HIJ1234','Plateado',2022,'Auto para oficina',b'1'),
+(7,'V-KLM5678',20,'KLM5678','Azul',2024,'Sedán premium',b'1'),
+(7,'V-NOP9012',35,'NOP9012','Negro',2023,'Suzuki Vitara',b'1'),
+(8,'V-QRS3456',2,'QRS3456','Naranja',2023,'Auto compacto',b'1'),
+(9,'V-TUV7890',27,'TUV7890','Verde',2024,'SUV amplia',b'1'),
+(10,'V-WXY1234',7,'WXY1234','Gris',2022,'Auto clásico',b'1'),
+(10,'V-ZAB5678',36,'ZAB5678','Rojo',2023,'Moto Yamaha FZ',b'1'),
+(11,'V-CDE9012',28,'CDE9012','Negro',2024,'Auto de lujo',b'1'),
+(12,'V-FGH3456',4,'FGH3456','Blanco',2024,'Sedán deportivo',b'1'),
+(13,'V-IJK7890',24,'IJK7890','Azul',2023,'SUV',b'1'),
+(14,'V-LMN1234',21,'LMN1234','Plateado',2024,'SUV familiar',b'1'),
+(14,'V-OPQ5678',34,'OPQ5678','Negro',2023,'Suzuki Swift',b'1'),
+(15,'V-RST9012',13,'RST9012','Gris',2023,'Auto económico',b'1'),
+(16,'V-UVW3456',22,'UVW3456','Blanco',2024,'Auto compacto',b'1'),
+(16,'V-XYZ7890',4,'XYZ7890','Azul',2022,'Honda Civic',b'1');
 
 -- ----------------------------
 -- View structure for vehiculofullinfo

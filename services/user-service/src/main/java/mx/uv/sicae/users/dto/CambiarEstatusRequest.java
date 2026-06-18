@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 public class CambiarEstatusRequest {
     private Integer idUsuario;
     private Integer idRol;
-    @JsonAlias("activo")
     private Boolean estatus;
 
     public Integer getIdUsuario() {

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class EntradaRequestDTO {
 
     // @NotBlank es específico para textos (String). Valida tres cosas a la vez:
-    // 1. Que no sea null. 2. Que no esté vacío (""). 3. Que no sean puros espacios ("   ").
+    // Que no sea null. Que no esté vacío (""). Que no sean puros espacios ("   ").
     @NotBlank(message = "La clave de usuario es obligatoria")
     private String claveUsuario;
 

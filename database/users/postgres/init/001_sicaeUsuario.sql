@@ -221,7 +221,7 @@ SELECT setval('"public"."tipoUsuario_idTipo_seq"', 3, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."usuario_idUsuario_seq"
 OWNED BY "public"."usuario"."idUsuario";
-SELECT setval('"public"."usuario_idUsuario_seq"', 1, true);
+SELECT setval('"public"."usuario_idUsuario_seq"', 16, true);
 
 -- ----------------------------
 -- Auto increment value for programaEducativo
@@ -256,7 +256,7 @@ ALTER TABLE "public"."tipoUsuario" ADD CONSTRAINT "tipoUsuario_pkey" PRIMARY KEY
 -- ----------------------------
 -- Auto increment value for usuario
 -- ----------------------------
-SELECT setval('"public"."usuario_idUsuario_seq"', 1, true);
+SELECT setval('"public"."usuario_idUsuario_seq"', 16, true);
 
 -- ----------------------------
 -- Primary Key structure for table usuario
@@ -278,3 +278,23 @@ INSERT INTO "public"."usuario" (
     'Usuario', 'Prueba', 'PRUEBA001', 'prueba@uv.mx',
     'prueba', '$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW', B'1', 1, 1, 1
 );
+
+-- ----------------------------
+-- Records of usuario (gatunos)
+-- ----------------------------
+INSERT INTO "public"."usuario" ("nombre","apellidoPaterno","apellidoMaterno","claveUsuario","email","telefono","username","password","estatus","idRol","idTipoUsuario","idProgramaEducativo","tiempoCreacion","tempoActualizacion") VALUES
+('Miyu','Hernández','López','HER001','miyu.hernandez@uv.mx','2281001234','miyu.hernandez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,4,NOW(),NOW()),
+('Luna','García','Martínez','GAR001','luna.garcia@uv.mx','2281002345','luna.garcia','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,1,NOW(),NOW()),
+('Simba','López','Rodríguez','LOP001','simba.lopez@uv.mx','2281003456','simba.lopez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,1,2,NOW(),NOW()),
+('Michi','Martínez','González','MAR001','michi.martinez@uv.mx','2281004567','michi.martinez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,3,NOW(),NOW()),
+('Canela','Rodríguez','Pérez','ROD001','canela.rodriguez@uv.mx','2281005678','canela.rodriguez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,2,3,NOW(),NOW()),
+('Pelusa','González','Sánchez','GON001','pelusa.gonzalez@uv.mx','2281006789','pelusa.gonzalez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,1,4,NOW(),NOW()),
+('Garfield','Sánchez','Flores','SAN001','garfield.sanchez@uv.mx','2281007890','garfield.sanchez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,1,NOW(),NOW()),
+('Neko','Pérez','Morales','PER001','neko.perez@uv.mx','2281008901','neko.perez','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,1,2,NOW(),NOW()),
+('Bigotes','Flores','Díaz','FLO001','bigotes.flores@uv.mx','2281009012','bigotes.flores','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,3,NOW(),NOW()),
+('Sombra','Morales','Cruz','MOR001','sombra.morales@uv.mx','2281010123','sombra.morales','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',1,2,1,NOW(),NOW()),
+('Tigre','Castillo','Ramírez','CAS001','tigre.castillo@uv.mx','2281011234','tigre.castillo','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,4,NOW(),NOW()),
+('Loki','Cruz','Vargas','CRU001','loki.cruz@uv.mx','2281012345','loki.cruz','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,1,2,NOW(),NOW()),
+('Nala','Díaz','Torres','DIA001','nala.diaz@uv.mx','2281013456','nala.diaz','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,3,NOW(),NOW()),
+('Milo','Reyes','Aguilar','REY001','milo.reyes@uv.mx','2281014567','milo.reyes','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,2,7,NOW(),NOW()),
+('Cleo','Torres','Jiménez','TOR001','cleo.torres@uv.mx','2281015678','cleo.torres','$2a$10$QLdKNBOx04hHvcy3nktLLOiBlhsyXYNrTYbrygA5Bg7l5gR89xvyW',B'1',2,3,1,NOW(),NOW());

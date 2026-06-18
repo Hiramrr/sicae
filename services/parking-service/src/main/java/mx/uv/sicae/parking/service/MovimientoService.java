@@ -38,13 +38,13 @@ public class MovimientoService {
     // (deshace el registro del movimiento) para que la base de datos no quede inconsistente.
     @Transactional
     public Movimiento registrarEntrada(EntradaRequestDTO peticion) {
-        // 1. Consume UserService (vía SOAP) para asegurar que el usuario existe y es válido.
+        // Consume UserService (vía SOAP) para asegurar que el usuario existe y es válido.
         Usuario usuario = userServiceClient.validarUsuario(peticion.getClaveUsuario());
         if (usuario == null || !usuario.isActivo()) {
             throw new IllegalArgumentException("El usuario no existe o se encuentra inactivo");
         }
 
-        // 2. Consume VehicleService (vía REST) para traer los datos del vehículo.
+        // Consume VehicleService (vía REST) para traer los datos del vehículo.
         Vehiculo vehiculo = vehicleServiceClient.validarVehiculoPorPlaca(peticion.getPlaca());
 
         // Validaciones de seguridad y negocio sobre el vehículo con mensajes específicos para depuración.
@@ -58,7 +58,7 @@ public class MovimientoService {
             throw new IllegalArgumentException("DEBUG 3: El vehiculo le pertenece al ID " + vehiculo.getIdUsuario() + " pero tu clave ALUMNO001 es del ID " + usuario.getIdUsuario());
         }
 
-        // 3. Regla de negocio: Límite de vehículos en el estacionamiento.
+        // Regla de negocio: Límite de vehículos en el estacionamiento.
         // Primero trae todos los IDs de los vehículos que posee este usuario.
         List<Integer> idsVehiculosDelUsuario = vehicleServiceClient.obtenerIdsVehiculosPorUsuario(usuario.getIdUsuario());
         if (idsVehiculosDelUsuario == null || idsVehiculosDelUsuario.isEmpty()) {
@@ -71,7 +71,7 @@ public class MovimientoService {
             throw new IllegalArgumentException("El usuario ya tiene el maximo de 2 vehiculos dentro del estacionamiento");
         }
 
-        // 4. Verifica que el cajón solicitado exista, esté activo en catálogo y no esté siendo ocupado por nadie más.
+        // Verifica que el cajón solicitado exista, esté activo en catálogo y no esté siendo ocupado por nadie más.
         Espacio espacio = espacioRepository.buscarPorId(peticion.getIdEspacio())
             .orElseThrow(() -> new IllegalArgumentException("El espacio indicado no existe"));
 
@@ -81,7 +81,7 @@ public class MovimientoService {
 
         LocalDateTime ahora = LocalDateTime.now();
 
-        // 5. Prepara y guarda el nuevo ticket/movimiento.
+        // Prepara y guarda el nuevo ticket/movimiento.
         Movimiento nuevoMovimiento = new Movimiento();
         nuevoMovimiento.setIdVehiculo(vehiculo.getIdVehiculo());
         nuevoMovimiento.setTarifaHora(peticion.getTarifaHora());
@@ -92,10 +92,10 @@ public class MovimientoService {
 
         movimientoRepository.registrarEntrada(nuevoMovimiento);
 
-        // 6. Bloquea el espacio en la base de datos para que nadie más lo use.
+        // Bloquea el espacio en la base de datos para que nadie más lo use.
         espacioRepository.actualizarOcupacion(espacio.getIdEspacio(), true);
 
-        // 7. Arma una respuesta "limpia" (solo con lo necesario) para mandarla al Frontend.
+        // Arma una respuesta "limpia" (solo con lo necesario) para mandarla al Frontend.
         Movimiento respuesta = new Movimiento();
         respuesta.setIdMovimiento(nuevoMovimiento.getIdMovimiento());
         respuesta.setTiempoEntrada(nuevoMovimiento.getTiempoEntrada());
@@ -108,19 +108,19 @@ public class MovimientoService {
     // @Transactional asegura que tanto el cobro como la liberación del cajón ocurran juntos o fallen juntos.
     @Transactional
     public Movimiento registrarSalida(Integer idMovimiento, SalidaRequestDTO peticion) {
-        // 1. Valida nuevamente al usuario (vía SOAP).
+        // Valida nuevamente al usuario (vía SOAP).
         Usuario usuario = userServiceClient.validarUsuario(peticion.getClaveUsuario());
         if (usuario == null || !usuario.isActivo()) {
             throw new IllegalArgumentException("El usuario no existe o se encuentra inactivo");
         }
 
-        // 2. Valida nuevamente al vehículo y que realmente le pertenezca a la persona (vía REST).
+        // Valida nuevamente al vehículo y que realmente le pertenezca a la persona (vía REST).
         Vehiculo vehiculo = vehicleServiceClient.validarVehiculoPorPlaca(peticion.getPlaca());
         if (vehiculo == null || !vehiculo.isActivo() || !vehiculo.getIdUsuario().equals(usuario.getIdUsuario())) {
             throw new IllegalArgumentException("El vehiculo no es valido, esta inactivo o no pertenece al usuario");
         }
 
-        // 3. Busca el ticket original en la BD.
+        // Busca el ticket original en la BD.
         Movimiento movimiento = movimientoRepository.buscarPorId(idMovimiento)
             .orElseThrow(() -> new IllegalArgumentException("El movimiento indicado no existe"));
 
@@ -134,7 +134,7 @@ public class MovimientoService {
             throw new IllegalArgumentException("El vehiculo indicado no corresponde al vehiculo que ingreso en este movimiento");
         }
 
-        // 4. Cálculos de tiempo y dinero.
+        // Cálculos de tiempo y dinero.
         LocalDateTime ahora = LocalDateTime.now();
         // Calcula la diferencia en minutos desde que entró hasta ahorita.
         long minutos = Duration.between(movimiento.getTiempoEntrada(), ahora).toMinutes();
@@ -147,20 +147,20 @@ public class MovimientoService {
         // Multiplica la tarifa guardada en el ticket por las horas transcurridas.
         BigDecimal costoTotal = movimiento.getTarifaHora().multiply(BigDecimal.valueOf(horas));
 
-        // 5. Actualiza los valores calculados en el objeto de base de datos.
+        // Actualiza los valores calculados en el objeto de base de datos.
         movimiento.setTiempoSalida(ahora);
         movimiento.setMinutosEstacionado((int) minutos);
         movimiento.setHorasCobradas((int) horas);
         movimiento.setCostoTotal(costoTotal);
         movimiento.setTiempoActualizacion(ahora);
 
-        // 6. Guarda los cambios del ticket y libera el espacio para que otros lo puedan usar.
+        // Guarda los cambios del ticket y libera el espacio para que otros lo puedan usar.
         movimientoRepository.actualizarSalida(movimiento);
         espacioRepository.actualizarOcupacion(movimiento.getIdEspacio(), false);
 
         Espacio espacio = espacioRepository.buscarPorId(movimiento.getIdEspacio()).orElse(new Espacio());
 
-        // 7. Arma el "Ticket final" de salida con el desglose del cobro para enviarlo al Frontend.
+        // Arma el "Ticket final" de salida con el desglose del cobro para enviarlo al Frontend.
         Movimiento respuesta = new Movimiento();
         respuesta.setIdMovimiento(movimiento.getIdMovimiento());
         respuesta.setTiempoEntrada(movimiento.getTiempoEntrada());

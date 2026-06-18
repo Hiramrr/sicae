@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /*En este servicio validamos las reglas de negocio:
-    1 . Que no haya campos vacios
-    2. Revisar el estatus
-    3. Comprobar bcrypto
-    4. Generar la respuesta
+    Que no haya campos vacios
+    Revisar el estatus
+    Comprobar bcrypto
+    Generar la respuesta
 
 
 
