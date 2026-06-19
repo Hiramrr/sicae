@@ -7,7 +7,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-// Le indica a Spring que esta clase contiene configuraciones que debe cargar al arrancar el microservicio
 @Configuration
 public class RestTemplateConfig {
 
@@ -19,7 +18,6 @@ public class RestTemplateConfig {
         // Se agrega un "interceptor". Esto significa que CADA VEZ que ParkingService haga una petición HTTP hacia otro microservicio (ej. VehicleService), pasará por este bloque de código antes de salir.
         restTemplate.getInterceptors().add((request, body, execution) -> {
 
-            // Obtenemos el contexto de la petición web ACTUAL (la petición original que el cliente le hizo a ParkingService)
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
             if (attributes != null) {
@@ -28,8 +26,7 @@ public class RestTemplateConfig {
                 // Extraemos el encabezado "Authorization" (donde viene el token JWT) de esa petición original
                 String token = servletRequest.getHeader("Authorization");
 
-                // Si la petición original traía un token, se lo "inyectamos" automáticamente a la NUEVA petición saliente.
-                // Esto es clave para propagar la seguridad: evita que tengas que pasar el JWT manualmente en cada método donde consumes otros microservicios.
+                // Si la petición original traía un token, se lo "inyectamos" automáticamente a la NUEVA petición saliente
                 if (token != null) {
                     request.getHeaders().add("Authorization", token);
                 }
